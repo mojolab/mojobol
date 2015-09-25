@@ -5,19 +5,11 @@ import sys
 import os
 import pprint
 import uuid
-def debugPrint(msg):
-    sys.stderr.write(msg+'\n')
-    sys.stderr.flush()
-    with open("/home/swara/mojobol/log/mojobol.log","a") as f:
-	f.write(msg+"\n")
-    f.close()
-
 class KeyPressException(Exception):
     def __init__(self, key):
         self.key = key
     def __str__(self):
-        return repr(self.key) + ' was pressed.'
-        
+        return repr(self.key) + ' was pressed.'   
 def newKeyDict():
     return {'0':RaiseZero,'#':Nop}
 def RaiseZero():
@@ -30,7 +22,6 @@ def removeTempFile(fname):
     os.remove(fname)
 def readline():
 	result = sys.stdin.readline().strip()
-	debugPrint('read line: ' + result)
 	return result
 def checkresult (params):
 	"""
@@ -45,7 +36,6 @@ def checkresult (params):
 			return -1
 		else:
 			result = result.group(1)
-			#debug("Result:%s Params:%s" % (result, params))
 			sys.stderr.write("PASS (%s)\n" % result)
 			sys.stderr.flush()
 			return result
@@ -54,7 +44,6 @@ def checkresult (params):
 		sys.stderr.flush()
 		return -2
 def hangup ():
-	debugPrint("HANGUP\n")
 	sys.stdout.write("HANGUP\n")
 	sys.stdout.flush()
 
@@ -70,11 +59,9 @@ def play (fname, keyDict = newKeyDict()):
 	done = 0
 	while done == 0:
 		mytime = time.time()
-		debugPrint("STREAM FILE %s \"%s\"\n" % (str(fname),escapeDigits))
 		sys.stdout.write("STREAM FILE %s \"%s\"\n" % (str(fname),escapeDigits))
 		sys.stdout.flush()
 		result = readline()
-		debugPrint(result)
 		result = checkresult(result)
 		if time.time() - mytime > 0.1:
 			done = 1
@@ -85,7 +72,6 @@ def play (fname, keyDict = newKeyDict()):
 	else:
 		#if the user pressed a key...
 		c = chr(int(result))
-		debugPrint("USER JUST PRESSED:" + c)
 		if isinstance(keyDict[c],tuple):
 			keyDict[c][0](*keyDict[c][1])
 		else:
@@ -101,15 +87,12 @@ def record (fname, stopDigits, timeout, silenceTimeout=-1):
 	silenceTimout is the silence time before the recording ends
 	automatically in seconds
 	"""
-
-	debugPrint("STARTING RECORD FILE")
 	ms_timeout = int(timeout*1000)
 	seconds_silenceTimeout = -1 #int(silenceTimeout)
 	cmdString = "RECORD FILE %s wav %s %s BEEP s=%d\n" % (fname, \
 														  stopDigits, \
 														  ms_timeout, \
 														  seconds_silenceTimeout)
-	debugPrint(cmdString)
 	sys.stdout.write(cmdString)
 	sys.stdout.flush()
 	result = readline()
@@ -161,8 +144,11 @@ class MojoAsteriskPlayer:
 		self.workflow=workflow
 		self.language=language
 		self.serverdir=serverdir
+		#self.logger("Player initialized with workflow - %s, language = %s, serverdir=%s" %(self.workflow.workflowpath,self.language,self.serverdir))
 		
 
+
+	
 	def getAudioFile(self,resource):
 		localizedresource=resource.getLocalizedResources(language=self.language)[0]
 		if localizedresource.rtype=='TextLocalizedResource':
@@ -174,9 +160,10 @@ class MojoAsteriskPlayer:
 			return tempfilename+"gsm"
 	
 	def executeStep(self,step):
+		##debugPrint(self.serverdir) 
 		stepresources=self.workflow.getStepResources(step)
 		if step['type']=='play':
-			debugPrint("Playing "+step['resource']['guid'])
+			#debugPrint("Playing "+step['resource']['guid'])
 			resource_guid=step['resource']['guid']
 			resource=self.workflow.getStepResourceByGuid(stepresources,resource_guid)
 			audiofile=self.getAudioFile(resource)
@@ -195,14 +182,14 @@ class MojoAsteriskPlayer:
 			for i in range(0,loopcount):
 				audiofile=self.getAudioFile(instructions_resource)
 				result=capture(audiofile,int(timeout)*1000,int(maxdigits))
-				debugPrint("Captured keys ="+result)
+				#debugPrint("Captured keys ="+result)
 				if result==step['valid_values']:
-					debugPrint("Valid Capture")
+					#debugPrint("Valid Capture")
 					return step['next']
 				else:
 					audiofile=self.getAudioFile(invalid_resource)
 					play(audiofile)  
-					debugPrint("Invalid Capture")
+					#debugPrint("Invalid Capture")
 			print "Hanging Up"
 			return None
 		if step['type']=='menu':
@@ -221,7 +208,7 @@ class MojoAsteriskPlayer:
 			for i in range(0,loopcount):
 				audiofile=self.getAudioFile(options_resource)
 				result=capture(audiofile,int(timeout)*1000,1)
-				debugPrint("Captured keys ="+result)
+				#debugPrint("Captured keys ="+result)
 				keypress=result
 				print "Got keypress ",keypress
 				for option in step['options']:
@@ -229,7 +216,7 @@ class MojoAsteriskPlayer:
 						return option['next']		
 				audiofile=self.getAudioFile(invalid_resource)
 				play(audiofile)  
-				debugPrint("Invalid Capture")
+				#debugPrint("Invalid Capture")
 			print "Hanging Up"
 			return None
 		if step['type']=='record':
@@ -237,16 +224,16 @@ class MojoAsteriskPlayer:
 			explanation_resource=self.workflow.getStepResourceByGuid(stepresources,explanation_resource_guid)
 			confirmation_resource_guid=step['confirmation_resource']['guid']
 			confirmation_resource=self.workflow.getStepResourceByGuid(stepresources,confirmation_resource_guid)
-			
 			audiofile=self.getAudioFile(explanation_resource)
 			play(audiofile)
-			recordingfilename="/tmp/"+str(uuid.uuid4())+".wav"
+			recordingfilename="callfile-"+str(uuid.uuid4())
 			recordingfile=os.path.join(self.serverdir,recordingfilename)
+			#debugPrint(recordingfile)
 			audiofile=self.getAudioFile(explanation_resource)
 			stopkey="#"+step['stop_key']
 			recordlen=int(step['timeout'])
 			result=record(recordingfile,stopkey,recordlen)
-			debugPrint("Result of recording = "+str(result))
+			#debugPrint("Result of recording = "+str(result))
 			audiofile=self.getAudioFile(confirmation_resource)
 			play(audiofile)
 			return None

@@ -47,6 +47,7 @@
     guid: 0aafa5c2-5b05-2e25-1799-4ebf4ea3207d
   timeout: 5
   number_of_attempts: 3
+  
 - id: 1443178429190
   name: Record
   type: record

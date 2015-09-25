@@ -14,7 +14,7 @@ class MojoBolServer:
 		self.workflow=MojoBolWorkflow(self.workflowpath)
 	def parse_workflow(self):
 		if self.playertype=="asterisk":
-			self.player=MojoAsteriskPlayer(self.language,self.workflow,self.directory)
+			self.player=MojoAsteriskPlayer(self.language,self.workflow,self.directory) 
 		rootstep={}
 		curstep={}
 		nextstep={}
