@@ -38,3 +38,11 @@ Different SIP Gateways work differently. The sample configuration under the sect
 how to add a Matrix SETU ATA 211G unit, the standard device we usually use for our installations
 
 
+Create workflows
+========================================================
+See video at https://www.youtube.com/watch?v=oK-tm1eF8Lc for instructions on how to make and export workflows from Verboice designer
+
+
+Install workflows
+========================================================
+Extract the workflow zip file to a location accessible by asterisk user. Change the server configuration's workflow element to reflect the new path. Easy peasy :)
