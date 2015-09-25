@@ -162,3 +162,220 @@ STREAM FILE /tmp/45108c2f-741e-63b4-5255-ae58f083d672gsm "0#"
 
 read line: 200 result=0 endpos=38914
 200 result=0 endpos=38914
+Playing e58e0b1d-5373-7308-d2aa-9515ca137ea4
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_request: mojobol/test.py
+agi_request: mojobol/test.py
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_channel: SIP/8989161864-00000000
+agi_channel: SIP/8989161864-00000000
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_language: en
+agi_language: en
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_type: SIP
+agi_type: SIP
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_uniqueid: 1443193852.0
+agi_uniqueid: 1443193852.0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_version: 1.8.10.1~dfsg-1ubuntu1
+agi_version: 1.8.10.1~dfsg-1ubuntu1
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callerid: 8989161864
+agi_callerid: 8989161864
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_calleridname: arjun
+agi_calleridname: arjun
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callingpres: 0
+agi_callingpres: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callingani2: 0
+agi_callingani2: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callington: 0
+agi_callington: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callingtns: 0
+agi_callingtns: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_dnid: mojobol
+agi_dnid: mojobol
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_rdnis: unknown
+agi_rdnis: unknown
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_context: callback
+agi_context: callback
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_extension: mojobolcall
+agi_extension: mojobolcall
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_priority: 5
+agi_priority: 5
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_enhanced: 0.0
+agi_enhanced: 0.0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_accountcode:
+agi_accountcode:
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_threadid: 140023630313216
+agi_threadid: 140023630313216
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: 
+
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: 510 Invalid or unknown command
+510 Invalid or unknown command
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+Playing e58e0b1d-5373-7308-d2aa-9515ca137ea4
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_request: mojobol/test.py
+agi_request: mojobol/test.py
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_channel: SIP/arjunaughat-00000000
+agi_channel: SIP/arjunaughat-00000000
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_language: en
+agi_language: en
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_type: SIP
+agi_type: SIP
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_uniqueid: 1443194291.0
+agi_uniqueid: 1443194291.0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_version: 1.8.10.1~dfsg-1ubuntu1
+agi_version: 1.8.10.1~dfsg-1ubuntu1
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callerid: arjunaughat
+agi_callerid: arjunaughat
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_calleridname: arjunaughat
+agi_calleridname: arjunaughat
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callingpres: 0
+agi_callingpres: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callingani2: 0
+agi_callingani2: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callington: 0
+agi_callington: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_callingtns: 0
+agi_callingtns: 0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_dnid: mojobol
+agi_dnid: mojobol
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_rdnis: unknown
+agi_rdnis: unknown
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_context: callback
+agi_context: callback
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_extension: mojobolcall
+agi_extension: mojobolcall
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_priority: 5
+agi_priority: 5
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_enhanced: 0.0
+agi_enhanced: 0.0
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_accountcode:
+agi_accountcode:
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: agi_threadid: 140107205011200
+agi_threadid: 140107205011200
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: 
+
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: 510 Invalid or unknown command
+510 Invalid or unknown command
+STREAM FILE /tmp/7f62e1c0-fe75-b784-dbf5-9e032fc71b2cgsm "0#"
+
+read line: 200 result=0 endpos=27857
+200 result=0 endpos=27857
+read line: 510 Invalid or unknown command
+Captured keys =
+STREAM FILE /tmp/bff3f7da-205e-3667-fd48-369f9b82c990gsm "0#"
+
+read line: 200 result=0 endpos=25575
+200 result=0 endpos=25575
+Invalid Capture
+read line: 200 result=12345
+Captured keys =12345
+Valid Capture
+STREAM FILE /tmp/c3b22f0c-36b2-c026-7bf8-09eee0c3b4e0gsm "0#"
+
+read line: 510 Invalid or unknown command
+510 Invalid or unknown command
+STREAM FILE /tmp/c3b22f0c-36b2-c026-7bf8-09eee0c3b4e0gsm "0#"
+
+read line: 510 Invalid or unknown command
+510 Invalid or unknown command
+STREAM FILE /tmp/c3b22f0c-36b2-c026-7bf8-09eee0c3b4e0gsm "0#"
+
+read line: 200 result=0 endpos=38157
+200 result=0 endpos=38157
+read line: 200 result=2
+Captured keys =2
+Playing 0a69cfd7-8819-f489-cd16-60751a8c60ab
+STREAM FILE /tmp/427a1a7d-7836-abae-5593-196cda06b1c8gsm "0#"
+
+read line: 510 Invalid or unknown command
+510 Invalid or unknown command
+STREAM FILE /tmp/427a1a7d-7836-abae-5593-196cda06b1c8gsm "0#"
+
+read line: 200 result=0 endpos=14251
+200 result=0 endpos=14251
