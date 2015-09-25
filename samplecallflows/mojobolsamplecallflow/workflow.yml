@@ -1,0 +1,77 @@
+---
+- id: 1443177958208
+  name: Welcome
+  type: play
+  root: true
+  next: 1443178026957
+  resource:
+    guid: e58e0b1d-5373-7308-d2aa-9515ca137ea4
+- id: 1443178026957
+  name: Input
+  type: capture
+  root: false
+  next: 1443178264559
+  store: 
+  invalid_resource:
+    guid: 8729a1f5-d7fb-ba6d-cf87-71a69a275a72
+  instructions_resource:
+    guid: baadc7ce-b4d5-4218-2966-7368e6bd6e55
+  min_input_length: '5'
+  max_input_length: '5'
+  valid_values: '12345'
+  finish_on_key: ! '#'
+  timeout: 5
+  number_of_attempts: 3
+  default: 
+- id: 1443178264559
+  name: Menu
+  type: menu
+  root: false
+  next: 
+  store: 
+  options:
+  - next: 1443178429190
+    is_default: false
+    number: '1'
+  - next: 1443178433574
+    is_default: false
+    number: '2'
+  - next: 1443178439320
+    is_default: false
+    number: '3'
+  invalid_resource:
+    guid: 050b28a8-4b85-8534-97ea-253804114ec6
+  explanation_resource:
+    guid: e5cfbd99-e3f6-4108-c6e4-dbd5f2696f0f
+  options_resource:
+    guid: 0aafa5c2-5b05-2e25-1799-4ebf4ea3207d
+  timeout: 5
+  number_of_attempts: 3
+- id: 1443178429190
+  name: Record
+  type: record
+  root: false
+  next: 
+  old_store: result
+  store: result
+  timeout: '10'
+  silence_detection: '0'
+  stop_key: '1'
+  explanation_resource:
+    guid: 82b8f37f-f343-98ee-df47-3b98741eb85b
+  confirmation_resource:
+    guid: cc000462-ec5a-4108-e00c-7470b7ff8b0c
+- id: 1443178433574
+  name: Message
+  type: play
+  root: false
+  next: 
+  resource:
+    guid: 0a69cfd7-8819-f489-cd16-60751a8c60ab
+- id: 1443178439320
+  name: Something else altogether
+  type: play
+  root: false
+  next: 
+  resource:
+    guid: 61fbcb2e-3a67-b95a-94d4-6ecb5ffdaa81
