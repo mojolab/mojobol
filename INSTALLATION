@@ -2,7 +2,7 @@
 
 Install dependencies
 ======================================================
-# apt-get install lame asterisk mysql-server wget gcc g++ bison zlib1g zlib-bin openssl php5-mysql php5 apache2 python-mysqldb python-setuptools
+# apt-get install lame asterisk mysql-server wget gcc g++ bison zlib1g zlib-bin openssl php5-mysql php5 apache2 python-mysqldb python-setuptools espeak
 # easy_install MySQL-Python
 # easy_install tweepy
 # easy_install oauth2
