@@ -19,17 +19,17 @@ class MojoBolServer:
 				os.mkdir(self.directory)
 			except:
 				print "Could not create server directory"
-		logpath=os.path.dirname(self.logfile)
+		logpath=os.path.dirname(os.path.join(self.directory,self.logfile))
 		if os.path.isdir(logpath)==False:
 			try:
 				os.mkdir(logpath)
-				f=open(self.logfile,"w")
+				f=open(os.path.join(self.directory,self.logfile),"w")
 				f.write("Starting Logfile")
 				f.close()
 			except:
 				print "Could not create server logfile"
 				
-		fh = logging.FileHandler(self.logfile)
+		fh = logging.FileHandler(os.path.join(self.directory,self.logfile))
 		self.logger=logging.getLogger(self.name)
 		if self.loglevel=="debug":
 			self.logger.setLevel(logging.DEBUG)
