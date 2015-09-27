@@ -2,13 +2,13 @@
 
 Install dependencies
 ======================================================
-# apt-get install lame asterisk mysql-server wget gcc g++ bison zlib1g zlib-bin openssl php5-mysql php5 apache2 python-mysqldb python-setuptools espeak
+# apt-get install lame asterisk mysql-server wget gcc g++ bison zlib1g zlib-bin openssl php5-mysql php5 apache2 python-mysqldb python-setuptools espeak python-dev git
 # easy_install MySQL-Python
 # easy_install tweepy
 # easy_install oauth2
 # easy_install stopwatch
 # easy_install simplejson
-
+# easy_install pyyaml
 Install codebase
 ======================================================
 # cd /opt 
@@ -32,11 +32,17 @@ Configure Asterisk to recieve calls from other SIP users
 The section titled [samplesipuser] in mojolab/conf/sip.conf is an example of how to add SIP users. These user ids can be used to configure a 
 SIP softphone such as Blink or Twinkle to call in over VoIP, great for testing.
 
+
 Configure Asterisk to interface with a SIP Gateway
 =======================================================
 Different SIP Gateways work differently. The sample configuration under the section titled [matrix] in mojolab/conf/sip.conf is an example of 
 how to add a Matrix SETU ATA 211G unit, the standard device we usually use for our installations
 
+
+Autoconfigure Asterisk
+=======================================================
+# cd mojobol
+# sh setupasterisk.sh
 
 Create workflows
 ========================================================
