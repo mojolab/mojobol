@@ -199,7 +199,28 @@ class MojoAsteriskPlayer:
 		if step['type']=='play':
 			stepExecuted=self.stepPlay(step)
 		if step['type']=='capture':
-			
+			instructions_resource_guid=step['instructions_resource']['guid']
+			instructions_resource=self.workflow.getStepResourceByGuid(stepresources,instructions_resource_guid)
+			invalid_resource_guid=step['invalid_resource']['guid']
+			invalid_resource=self.workflow.getStepResourceByGuid(stepresources,invalid_resource_guid)
+			timeout=step['timeout']
+			mindigits=step['min_input_length']
+			maxdigits=step['max_input_length']
+			print "Capturing"
+			loopcount=step['number_of_attempts']
+			for i in range(0,loopcount):
+				audiofile=self.getAudioFile(instructions_resource)
+				result=capture(audiofile,int(timeout)*1000,int(maxdigits))
+				#debugPrint("Captured keys ="+result)
+				if result==step['valid_values']:
+					#debugPrint("Valid Capture")
+					return step['next']
+				else:
+					audiofile=self.getAudioFile(invalid_resource)
+					play(audiofile)  
+					#debugPrint("Invalid Capture")
+			print "Hanging Up"
+			return None
 		if step['type']=='menu':
 			print "Playing explanation resource", step['explanation_resource']
 			print "Playing options resource", step['options_resource']
