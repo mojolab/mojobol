@@ -164,6 +164,7 @@ class MojoAsteriskPlayer:
 	
 	def stepPlay(self,step):
 		#debugPrint("Playing "+step['resource']['guid'])
+		stepresources=self.workflow.getStepResources(step)
 		resource_guid=step['resource']['guid']
 		resource=self.workflow.getStepResourceByGuid(stepresources,resource_guid)
 		audiofile=self.getAudioFile(resource)
