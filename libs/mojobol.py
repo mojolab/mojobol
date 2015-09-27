@@ -1,5 +1,5 @@
 import os,sys,ConfigParser,yaml,pprint,time
-sys.path.append("/home/swara/mojobol/libs")
+sys.path.append("/opt/mojobol/libs")
 from mojoasteriskplayer import *
 import logging
 class MojoBolServer:
