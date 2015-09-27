@@ -5,6 +5,7 @@ import sys
 import os
 import pprint
 import uuid
+import logging
 class KeyPressException(Exception):
     def __init__(self, key):
         self.key = key
@@ -140,16 +141,18 @@ def sayNumber(number):
 	result = readline() 
 
 class MojoAsteriskPlayer:
-	def __init__(self,language,workflow,serverdir):
+	
+	def __init__(self,servername,language,workflow,serverdir):
 		self.workflow=workflow
 		self.language=language
 		self.serverdir=serverdir
-		#self.logger("Player initialized with workflow - %s, language = %s, serverdir=%s" %(self.workflow.workflowpath,self.language,self.serverdir))
+		self.servername=servername
+		self.logger=logging.getLogger(self.servername)
+		self.logger.info("Player initialized with workflow - %s, language = %s, serverdir=%s" %(self.workflow.workflowpath,self.language,self.serverdir))
 		
-
-
-	
 	def getAudioFile(self,resource):
+		resourcename=resource.resourcemap['name']
+		self.logger.info("Getting audio file path for resource with name %s with guid %s" %(resourcename,resource.resource_guid))
 		localizedresource=resource.getLocalizedResources(language=self.language)[0]
 		if localizedresource.rtype=='TextLocalizedResource':
 			tempfilename="/tmp/"+localizedresource.guid
@@ -159,39 +162,44 @@ class MojoAsteriskPlayer:
 			#tempfilename="/opt/swara/sounds/7316"
 			return tempfilename+"gsm"
 	
+	def stepPlay(self,step):
+		#debugPrint("Playing "+step['resource']['guid'])
+		resource_guid=step['resource']['guid']
+		resource=self.workflow.getStepResourceByGuid(stepresources,resource_guid)
+		audiofile=self.getAudioFile(resource)
+		play(audiofile)
+		return True
+	def stepCapture(self,step):
+		instructions_resource_guid=step['instructions_resource']['guid']
+		instructions_resource=self.workflow.getStepResourceByGuid(stepresources,instructions_resource_guid)
+		invalid_resource_guid=step['invalid_resource']['guid']
+		invalid_resource=self.workflow.getStepResourceByGuid(stepresources,invalid_resource_guid)
+		timeout=step['timeout']
+		mindigits=step['min_input_length']
+		maxdigits=step['max_input_length']
+		print "Capturing"
+		loopcount=step['number_of_attempts']
+		for i in range(0,loopcount):
+			audiofile=self.getAudioFile(instructions_resource)
+			result=capture(audiofile,int(timeout)*1000,int(maxdigits))
+			#debugPrint("Captured keys ="+result)
+			if result==step['valid_values']:
+				#debugPrint("Valid Capture")
+				return step['next']
+			else:
+				audiofile=self.getAudioFile(invalid_resource)
+				play(audiofile)  
+				#debugPrint("Invalid Capture")
+		print "Hanging Up"
+		return None
 	def executeStep(self,step):
 		##debugPrint(self.serverdir) 
+		self.logger.info("Executing step id %s name %s" %(step['id'],step['name']))
 		stepresources=self.workflow.getStepResources(step)
 		if step['type']=='play':
-			#debugPrint("Playing "+step['resource']['guid'])
-			resource_guid=step['resource']['guid']
-			resource=self.workflow.getStepResourceByGuid(stepresources,resource_guid)
-			audiofile=self.getAudioFile(resource)
-			play(audiofile)
-			return step['next']
+			stepExecuted=self.stepPlay(step)
 		if step['type']=='capture':
-			instructions_resource_guid=step['instructions_resource']['guid']
-			instructions_resource=self.workflow.getStepResourceByGuid(stepresources,instructions_resource_guid)
-			invalid_resource_guid=step['invalid_resource']['guid']
-			invalid_resource=self.workflow.getStepResourceByGuid(stepresources,invalid_resource_guid)
-			timeout=step['timeout']
-			mindigits=step['min_input_length']
-			maxdigits=step['max_input_length']
-			print "Capturing"
-			loopcount=step['number_of_attempts']
-			for i in range(0,loopcount):
-				audiofile=self.getAudioFile(instructions_resource)
-				result=capture(audiofile,int(timeout)*1000,int(maxdigits))
-				#debugPrint("Captured keys ="+result)
-				if result==step['valid_values']:
-					#debugPrint("Valid Capture")
-					return step['next']
-				else:
-					audiofile=self.getAudioFile(invalid_resource)
-					play(audiofile)  
-					#debugPrint("Invalid Capture")
-			print "Hanging Up"
-			return None
+			
 		if step['type']=='menu':
 			print "Playing explanation resource", step['explanation_resource']
 			print "Playing options resource", step['options_resource']
@@ -237,3 +245,5 @@ class MojoAsteriskPlayer:
 			audiofile=self.getAudioFile(confirmation_resource)
 			play(audiofile)
 			return None
+		if stepExecuted:
+			return step['next']

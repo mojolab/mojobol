@@ -1,7 +1,7 @@
 import os,sys,ConfigParser,yaml,pprint,time
 sys.path.append("/home/swara/mojobol/libs")
 from mojoasteriskplayer import *
-
+import logging
 class MojoBolServer:
 	def __init__(self,configfile):
 		config=ConfigParser.ConfigParser()
@@ -11,10 +11,24 @@ class MojoBolServer:
 		self.playertype=config.get("Server","playertype")
 		self.language=config.get("Server","language")
 		self.workflowpath=config.get("Server","workflowpath")
+		self.loglevel=config.get("Server","loglevel")
+		self.logfile=config.get("Server","logfile")
 		self.workflow=MojoBolWorkflow(self.workflowpath)
+		fh = logging.FileHandler(self.logfile)
+		self.logger=logging.getLogger(self.name)
+		if self.loglevel=="debug":
+			self.logger.setLevel(logging.DEBUG)
+			fh.setLevel(logging.DEBUG)
+		else:
+			self.logger.setLevel(logging.INFO)
+			fh.setLevel(logging.INFO)
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		fh.setFormatter(formatter)
+		self.logger.addHandler(fh)
+		self.logger.info("MojoBol Server started")
 	def parse_workflow(self):
 		if self.playertype=="asterisk":
-			self.player=MojoAsteriskPlayer(self.language,self.workflow,self.directory) 
+			self.player=MojoAsteriskPlayer(self.name,self.language,self.workflow,self.directory) 
 		rootstep={}
 		curstep={}
 		nextstep={}
