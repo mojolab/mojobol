@@ -159,17 +159,19 @@ class MojoAsteriskPlayer:
 	
 		if localizedresource.rtype=="ExternalAudio":
 			audiofilename=os.path.join(self.workflow.workflowpath,localizedresource.resourcemap['recorded_audio'])
-			os.system("sox %s.wav -r8000 %s.wav" %(audiofilename,audiofilename+"gsm"))
+			os.system("sox %s.wav -r 8000 -c 1 %s.wav" %(audiofilename,audiofilename+"gsm"))
 			os.system("chmod a+rwx %s*" %(audiofilename+"gsm"))
-			self.logger.info("Filename is %s" %audiofilename+"gsm")
+			self.logger.info("Filename is %s" %audiofilename +"gsm")
 			return audiofilename+"gsm"
 			
 		if localizedresource.rtype=='TextLocalizedResource':
 			tempfilename="/tmp/"+localizedresource.guid
-			os.system("espeak -v hindi -s 100 -w %s.wav '%s'" %(tempfilename,localizedresource.resourcemap['text']))
-			os.system("sox %s.wav -r8000 %s.wav" %(tempfilename,tempfilename+"gsm"))
+			command="espeak -v hindi -s 100 -w %s.wav '%s'" %(tempfilename,localizedresource.resourcemap['text'].replace("'"," "))
+			self.logger.info("Running command %s" %command)
+			os.system(command)
+			os.system("sox %s.wav -r 8000 -c 1 %s.wav" %(tempfilename,tempfilename+"gsm"))
 			os.system("chmod a+rwx %s*" %(tempfilename+"gsm"))
-			#tempfilename="/opt/swara/sounds/7316"
+			self.logger.info("Filename is %s" %tempfilename +"gsm")
 			return tempfilename+"gsm"
 	
 	def stepPlay(self,step):
