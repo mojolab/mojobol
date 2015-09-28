@@ -163,7 +163,7 @@ class MojoAsteriskPlayer:
 			#os.system("chmod a+rwx %s*" %(audiofilename+"gsm"))
 			#self.logger.info("Filename is %s" %audiofilename +"gsm")
 			#return audiofilename+"gsm"
-			self.logger.info("Filename is %s" %audiofilename")
+			self.logger.info("Filename is %s" %audiofilename)
 			return audiofilename
 			
 		if localizedresource.rtype=='TextLocalizedResource':
