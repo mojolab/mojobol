@@ -204,15 +204,19 @@ class MojoAsteriskPlayer:
 			else:
 				audiofile=self.getAudioFile(invalid_resource)
 				play(audiofile)  
-				#debugPrint("Invalid Capture")
 		print "Hanging Up"
 		return None
 	def executeStep(self,step):
-		##debugPrint(self.serverdir) 
 		self.logger.info("Executing step id %s name %s" %(step['id'],step['name']))
 		stepresources=self.workflow.getStepResources(step)
 		if step['type']=='play':
-			stepExecuted=self.stepPlay(step)
+			stepresources=self.workflow.getStepResources(step)
+			resource_guid=step['resource']['guid']
+			resource=self.workflow.getStepResourceByGuid(stepresources,resource_guid)
+			audiofile=self.getAudioFile(resource)
+			play(audiofile)
+			self.logger.info("Next step will be %s" %(str(step['next'])))
+			return step['next']
 		if step['type']=='capture':
 			instructions_resource_guid=step['instructions_resource']['guid']
 			instructions_resource=self.workflow.getStepResourceByGuid(stepresources,instructions_resource_guid)
@@ -226,15 +230,16 @@ class MojoAsteriskPlayer:
 			for i in range(0,loopcount):
 				audiofile=self.getAudioFile(instructions_resource)
 				result=capture(audiofile,int(timeout)*1000,int(maxdigits))
-				#debugPrint("Captured keys ="+result)
+				self.logger.info("Captured result %s" %(str(result)))
 				if result==step['valid_values']:
-					#debugPrint("Valid Capture")
+					self.logger.info("That is a valid capture")
+					self.logger.info("Next step will be %s" %(str(step['next'])))
 					return step['next']
 				else:
+					self.logger.info("That is an invalid capture")
 					audiofile=self.getAudioFile(invalid_resource)
 					play(audiofile)  
-					#debugPrint("Invalid Capture")
-			print "Hanging Up"
+			self.logger.info("Next step will be None")
 			return None
 		if step['type']=='menu':
 			print "Playing explanation resource", step['explanation_resource']
@@ -250,8 +255,9 @@ class MojoAsteriskPlayer:
 			timeout=step['timeout']
 			loopcount=step['number_of_attempts']
 			for i in range(0,loopcount):
+				self.logger.info("Beginning menu loop %d" %i)
 				audiofile=self.getAudioFile(options_resource)
-				result=capture(audiofile,int(timeout)*1000,1)
+				result=capture(audiofile,int(timeout),1)
 				#debugPrint("Captured keys ="+result)
 				keypress=result
 				print "Got keypress ",keypress
@@ -281,5 +287,4 @@ class MojoAsteriskPlayer:
 			audiofile=self.getAudioFile(confirmation_resource)
 			play(audiofile)
 			return None
-		if stepExecuted:
-			return step['next']
+		
