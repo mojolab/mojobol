@@ -1,8 +1,9 @@
-import os,sys,ConfigParser,yaml,pprint,time
+import os,sys,ConfigParser,yaml,pprint,time, datetime
 sys.path.append("/opt/mojobol/libs")
 from mojoasteriskplayer import *
 import logging
-class MojoBolServer:
+
+class MojoBolResponder:
 	def __init__(self,configfile):
 		config=ConfigParser.ConfigParser()
 		config.read(configfile)
@@ -13,6 +14,7 @@ class MojoBolServer:
 		self.workflowpath=config.get("Server","workflowpath")
 		self.loglevel=config.get("Server","loglevel")
 		self.logfile=config.get("Server","logfile")
+		self.callsdir=config.get("Server","callsdir")
 		self.workflow=MojoBolWorkflow(self.workflowpath)
 		if os.path.isdir(self.directory)==False:
 			try:
@@ -41,9 +43,9 @@ class MojoBolServer:
 		fh.setFormatter(formatter)
 		self.logger.addHandler(fh)
 		self.logger.info("MojoBol Server started")
-	def parse_workflow(self):
+	def parse_workflow(self,callid):
 		if self.playertype=="asterisk":
-			self.player=MojoAsteriskPlayer(self.name,self.language,self.workflow,self.directory) 
+			self.player=MojoAsteriskPlayer(self.name,self.language,self.workflow,self.directory,self.callsdir) 
 		rootstep={}
 		curstep={}
 		nextstep={}
@@ -56,11 +58,12 @@ class MojoBolServer:
 			print "No root step"
 		else:
 			curstep=rootstep
-			nextid=self.player.executeStep(curstep)
+			nextid=self.player.executeStep(curstep,callid)
 		while(nextid!=None):
 			curstep=self.workflow.getStepByID(nextid)
-			nextid=self.player.executeStep(curstep)
+			nextid=self.player.executeStep(curstep,callid)
 			time.sleep(1)
+
 class MojoBolWorkflow:
 	def __init__(self,path_to_workflow):
 		yamlfile=os.popen("ls '%s'" %(os.path.join(path_to_workflow,"workflow.yml"))).read().strip()
@@ -129,6 +132,7 @@ class MojoBolWorkflowResource:
 					localizedresources.append(localizedresource)
 		return localizedresources
 			
+
 class MojoBolWorkFlowLocalizedResource:
 	def __init__(self,workflowpath,filename):
 		self.workflowpath=workflowpath
@@ -139,7 +143,47 @@ class MojoBolWorkFlowLocalizedResource:
 		self.language=self.resourcemap['language']
 		self.rtype=self.resourcemap['type']
 		self.guid=self.resourcemap['guid']
-		self.resource_guid=self.resourcemap['resource_guid']
+		self.resource_guid=self.resourcemap['resource_guid']	
 		
 		
-	
+class MojoBolCall:
+	def __init__(self,responder,env):
+		self.callerid = env['agi_callerid']
+		self.responder=responder
+		#self.responder.logger.info("Hello World")
+		self.responder.logger.info(str(env))
+		
+		self.starttime=datetime.datetime.now()
+		self.callid=self.callerid+"-"+self.responder.name+"-"+self.starttime.strftime("%Y%d%m-%H%M%S")
+		self.loglevel=self.responder.loglevel
+		#create directory for call files
+		self.calldir=os.path.join(self.responder.directory,self.responder.callsdir,self.callid)
+		if os.path.isdir(self.calldir)==False:
+			try:
+				os.mkdir(self.calldir)
+			except:
+				print "Could not create server directory"
+		self.logfile=os.path.join(self.calldir,"log",self.callid+".log")
+		logpath=os.path.dirname(os.path.join(self.calldir,self.logfile))
+		if os.path.isdir(logpath)==False:
+			try:
+				os.mkdir(logpath)
+				f=open(os.path.join(self.calldir,self.logfile),"w")
+				f.write("Starting Logfile")
+				f.close()
+			except:
+				print "Could not create server logfile"
+				
+		fh = logging.FileHandler(os.path.join(self.calldir,self.logfile))
+		self.logger=logging.getLogger(self.callid)
+		if self.loglevel=="debug":
+			self.logger.setLevel(logging.DEBUG)
+			fh.setLevel(logging.DEBUG)
+		else:
+			self.logger.setLevel(logging.INFO)
+			fh.setLevel(logging.INFO)
+		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+		fh.setFormatter(formatter)
+		self.logger.addHandler(fh)
+		self.logger.info("MojoBol call with id %s started" %self.callid)
+		

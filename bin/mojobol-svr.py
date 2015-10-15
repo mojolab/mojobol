@@ -3,8 +3,9 @@
 import sys
 sys.path.append("/opt/mojobol/libs")
 from mojobol import *
-
+from mojoasteriskplayer import *
 if __name__=="__main__":
-	ms=MojoBolServer("/opt/mojobol/conf/sampleserver.conf")
-	ms.parse_workflow()
-	
+	env=read_agi_environment()
+	ms=MojoBolResponder("/opt/mojobol/conf/sampleserver.conf")
+	call=MojoBolCall(ms,env)
+	call.responder.parse_workflow(call.callid)

@@ -6,6 +6,30 @@ import os
 import pprint
 import uuid
 import logging
+
+def read_agi_environment():
+	env = {}
+	tests = 0;
+	while True:
+		line = sys.stdin.readline().strip()
+		if line == '':
+			break
+		key,data = line.split(':')
+		if key[:4] != 'agi_':
+			sys.stderr.write("Did not work!\n")
+			sys.stderr.flush()
+			continue
+		key = key.strip()
+		data = data.strip()
+		if key != '':
+			env[key] = data
+	sys.stderr.write("AGI Environment Dump:\n")
+	sys.stderr.flush()
+	for key in env.keys():
+		sys.stderr.write(" -- %s = %s\n" % (key, env[key]))
+		sys.stderr.flush()
+	return env
+
 class KeyPressException(Exception):
     def __init__(self, key):
         self.key = key
@@ -142,10 +166,11 @@ def sayNumber(number):
 
 class MojoAsteriskPlayer:
 	
-	def __init__(self,servername,language,workflow,serverdir):
+	def __init__(self,servername,language,workflow,serverdir,callsdir):
 		self.workflow=workflow
 		self.language=language
 		self.serverdir=serverdir
+		self.callsdir=callsdir
 		self.servername=servername
 		self.logger=logging.getLogger(self.servername)
 		self.logger.info("Player initialized with workflow - %s, language = %s, serverdir=%s" %(self.workflow.workflowpath,self.language,self.serverdir))
@@ -154,15 +179,9 @@ class MojoAsteriskPlayer:
 		resourcename=resource.resourcemap['name']
 		self.logger.info("Getting audio file path for resource with name %s with guid %s" %(resourcename,resource.resource_guid))
 		localizedresource=resource.getLocalizedResources(language=self.language)[0]
-		
 		self.logger.info("Localised resource type is %s"%localizedresource.rtype)
-	
 		if localizedresource.rtype=="ExternalAudio":
 			audiofilename=os.path.join(self.workflow.workflowpath,localizedresource.resourcemap['recorded_audio'])
-			#os.system("sox %s.wav -r 8000 -c 1 %s.wav" %(audiofilename,audiofilename+"gsm"))
-			#os.system("chmod a+rwx %s*" %(audiofilename+"gsm"))
-			#self.logger.info("Filename is %s" %audiofilename +"gsm")
-			#return audiofilename+"gsm"
 			self.logger.info("Filename is %s" %audiofilename)
 			return audiofilename
 			
@@ -206,8 +225,9 @@ class MojoAsteriskPlayer:
 				play(audiofile)  
 		print "Hanging Up"
 		return None
-	def executeStep(self,step):
+	def executeStep(self,step,callid):
 		self.logger.info("Executing step id %s name %s" %(step['id'],step['name']))
+		self.calllogger=logging.getLogger(callid)
 		stepresources=self.workflow.getStepResources(step)
 		if step['type']=='play':
 			stepresources=self.workflow.getStepResources(step)
@@ -215,6 +235,7 @@ class MojoAsteriskPlayer:
 			resource=self.workflow.getStepResourceByGuid(stepresources,resource_guid)
 			audiofile=self.getAudioFile(resource)
 			play(audiofile)
+			self.calllogger.info("Played file %s" %resource_guid)
 			self.logger.info("Next step will be %s" %(str(step['next'])))
 			return step['next']
 		if step['type']=='capture':
@@ -233,15 +254,18 @@ class MojoAsteriskPlayer:
 				self.logger.info("Captured result %s" %(str(result)))
 				if result==step['valid_values']:
 					self.logger.info("That is a valid capture")
+					self.calllogger.info("%s is a valid input from user" %result)
 					self.logger.info("Next step will be %s" %(str(step['next'])))
 					return step['next']
 				else:
 					self.logger.info("That is an invalid capture")
 					audiofile=self.getAudioFile(invalid_resource)
 					play(audiofile)  
+			self.calllogger.info("Invalid or no input from user")
 			self.logger.info("Next step will be None")
 			return None
 		if step['type']=='menu':
+			self.calllogger.info("User presented with menu having options %s" %str(step['options']))
 			print "Playing explanation resource", step['explanation_resource']
 			print "Playing options resource", step['options_resource']
 			options_resource_guid=step['options_resource']['guid']
@@ -261,28 +285,35 @@ class MojoAsteriskPlayer:
 				#debugPrint("Captured keys ="+result)
 				keypress=result
 				print "Got keypress ",keypress
+				self.calllogger.info("User chose %s" %keypress)
+					
 				for option in step['options']:
 					if option['number']==keypress:
 						return option['next']		
 				audiofile=self.getAudioFile(invalid_resource)
 				play(audiofile)  
+				self.calllogger.info("That choice is invalid")
 				#debugPrint("Invalid Capture")
 			print "Hanging Up"
 			return None
 		if step['type']=='record':
+			self.calllogger.info("Recording file from user")
 			explanation_resource_guid=step['explanation_resource']['guid']
 			explanation_resource=self.workflow.getStepResourceByGuid(stepresources,explanation_resource_guid)
 			confirmation_resource_guid=step['confirmation_resource']['guid']
 			confirmation_resource=self.workflow.getStepResourceByGuid(stepresources,confirmation_resource_guid)
 			audiofile=self.getAudioFile(explanation_resource)
 			play(audiofile)
-			recordingfilename="callfile-"+str(uuid.uuid4())
-			recordingfile=os.path.join(self.serverdir,recordingfilename)
+			recordingfilename="callfile-"+callid+"-"+str(uuid.uuid4())
+			self.calllogger.info("file name =%s " %recordingfilename)
+			recordingfile=os.path.join(self.serverdir,self.callsdir,callid,recordingfilename)
+			self.calllogger.info("file path =%s " %recordingfile)
 			#debugPrint(recordingfile)
 			audiofile=self.getAudioFile(explanation_resource)
 			stopkey="#"+step['stop_key']
 			recordlen=int(step['timeout'])
 			result=record(recordingfile,stopkey,recordlen)
+			
 			#debugPrint("Result of recording = "+str(result))
 			audiofile=self.getAudioFile(confirmation_resource)
 			play(audiofile)
