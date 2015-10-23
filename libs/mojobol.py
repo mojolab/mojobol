@@ -15,6 +15,7 @@ class MojoBolResponder:
 		self.loglevel=config.get("Server","loglevel")
 		self.logfile=config.get("Server","logfile")
 		self.callsdir=config.get("Server","callsdir")
+		self.reportsdir=config.get("Server","reportsdir")
 		self.workflow=MojoBolWorkflow(self.workflowpath)
 		if os.path.isdir(self.directory)==False:
 			try:
@@ -43,7 +44,7 @@ class MojoBolResponder:
 		fh.setFormatter(formatter)
 		self.logger.addHandler(fh)
 		self.logger.info("MojoBol Server started")
-	def parse_workflow(self,callid):
+	def parse_workflow(self,call):
 		if self.playertype=="asterisk":
 			self.player=MojoAsteriskPlayer(self.name,self.language,self.workflow,self.directory,self.callsdir) 
 		rootstep={}
@@ -58,10 +59,10 @@ class MojoBolResponder:
 			print "No root step"
 		else:
 			curstep=rootstep
-			nextid=self.player.executeStep(curstep,callid)
+			nextid=self.player.executeStep(curstep,call)
 		while(nextid!=None):
 			curstep=self.workflow.getStepByID(nextid)
-			nextid=self.player.executeStep(curstep,callid)
+			nextid=self.player.executeStep(curstep,call)
 			time.sleep(1)
 		self.logger.info("Finished parsing workflow")
 		return True
@@ -160,10 +161,12 @@ class MojoBolCall:
 		
 		self.starttime=datetime.datetime.now()
 		self.stoptime=self.starttime
-		self.callid=self.callerid+"-"+self.responder.name+"-"+self.starttime.strftime("%Y%d%m-%H%M%S")
+		self.callid=self.callerid+"-"+self.responder.name+"-"+self.starttime.strftime("%Y-%b-%d-%H-%M-%S")
 		self.loglevel=self.responder.loglevel
 		#create directory for call files
 		self.calldir=os.path.join(self.responder.directory,self.responder.callsdir,self.callid)
+		self.menufilename="menuresponsefile-"+self.callid+".yml"
+		self.menufile=os.path.join(self.responder.directory,self.responder.callsdir,self.callid,self.menufilename)
 		if os.path.isdir(self.calldir)==False:
 			try:
 				os.mkdir(self.calldir)

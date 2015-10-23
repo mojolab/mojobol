@@ -6,6 +6,7 @@ import os
 import pprint
 import uuid
 import logging
+import yaml
 
 def read_agi_environment():
 	env = {}
@@ -225,9 +226,9 @@ class MojoAsteriskPlayer:
 				play(audiofile)  
 		print "Hanging Up"
 		return None
-	def executeStep(self,step,callid):
+	def executeStep(self,step,call):
 		self.logger.info("Executing step id %s name %s" %(step['id'],step['name']))
-		self.calllogger=logging.getLogger(callid)
+		self.calllogger=logging.getLogger(call.callid)
 		stepresources=self.workflow.getStepResources(step)
 		if step['type']=='play':
 			stepresources=self.workflow.getStepResources(step)
@@ -265,6 +266,12 @@ class MojoAsteriskPlayer:
 			self.logger.info("Next step will be None")
 			return None
 		if step['type']=='menu':
+			f=open(call.menufile,"a")
+			f.write("\n")
+			
+			responses=[]
+			response={}
+			response['id']=str(uuid.uuid4())
 			self.calllogger.info("User presented with menu having options %s" %str(step['options']))
 			print "Playing explanation resource", step['explanation_resource']
 			print "Playing options resource", step['options_resource']
@@ -278,22 +285,39 @@ class MojoAsteriskPlayer:
 			play(audiofile)
 			timeout=step['timeout']
 			loopcount=int(step['number_of_attempts'].strip("'"))
+			step['userchoices']=[]
 			for i in range(0,loopcount):
+				userchoice={}
+				userchoice['attemptno']=str(i)
 				self.logger.info("Beginning menu loop %d" %i)
 				audiofile=self.getAudioFile(options_resource)
 				result=capture(audiofile,int(timeout),1)
 				#debugPrint("Captured keys ="+result)
 				keypress=result
+				userchoice['keypress']=keypress
 				print "Got keypress ",keypress
 				self.calllogger.info("User chose %s" %keypress)
-					
 				for option in step['options']:
 					if option['number']==keypress:
+						userchoice['nextstep']=option['next']
+						step['userchoices'].append(userchoice)
+						response['data']=step
+						responses.append(response)
+						f.write(yaml.dump(responses,default_flow_style=False))
+						f.write("\n")
+						f.close()
 						return option['next']		
 				audiofile=self.getAudioFile(invalid_resource)
+				userchoice['nextstep']=False
+				step['userchoices']	.append(userchoice)
 				play(audiofile)  
 				self.calllogger.info("That choice is invalid")
 				#debugPrint("Invalid Capture")
+			response['data']=step
+			responses.append(response)
+			f.write(yaml.dump(responses,default_flow_style=False))
+			f.write("\n")
+			f.close()
 			print "Hanging Up"
 			return None
 		if step['type']=='record':
@@ -306,7 +330,7 @@ class MojoAsteriskPlayer:
 			play(audiofile)
 			recordingfilename="callfile-"+callid+"-"+str(uuid.uuid4())
 			self.calllogger.info("file name =%s " %recordingfilename)
-			recordingfile=os.path.join(self.serverdir,self.callsdir,callid,recordingfilename)
+			recordingfile=os.path.join(self.serverdir,self.callsdir,call.callid,recordingfilename)
 			self.calllogger.info("file path =%s " %recordingfile)
 			#debugPrint(recordingfile)
 			audiofile=self.getAudioFile(explanation_resource)
