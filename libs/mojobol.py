@@ -63,6 +63,8 @@ class MojoBolResponder:
 			curstep=self.workflow.getStepByID(nextid)
 			nextid=self.player.executeStep(curstep,callid)
 			time.sleep(1)
+		self.logger.info("Finished parsing workflow")
+		return True
 
 class MojoBolWorkflow:
 	def __init__(self,path_to_workflow):
@@ -148,12 +150,16 @@ class MojoBolWorkFlowLocalizedResource:
 		
 class MojoBolCall:
 	def __init__(self,responder,env):
-		self.callerid = env['agi_callerid']
+		try:
+			self.callerid = env['agi_callerid']
+		except:
+			self.callerid="Unknown"
 		self.responder=responder
 		#self.responder.logger.info("Hello World")
 		self.responder.logger.info(str(env))
 		
 		self.starttime=datetime.datetime.now()
+		self.stoptime=self.starttime
 		self.callid=self.callerid+"-"+self.responder.name+"-"+self.starttime.strftime("%Y%d%m-%H%M%S")
 		self.loglevel=self.responder.loglevel
 		#create directory for call files
@@ -186,4 +192,23 @@ class MojoBolCall:
 		fh.setFormatter(formatter)
 		self.logger.addHandler(fh)
 		self.logger.info("MojoBol call with id %s started" %self.callid)
+	
+	def endcall(self):
+		self.stoptime=datetime.datetime.now()
+		calllength=self.stoptime-self.starttime
+		self.logger.info("Call ended at %s" %(self.stoptime.strftime("%Y-%b-%d %H:%M:%S")))
+		self.logger.info("Call duration: %s" %(str(calllength.seconds+1)))
+	def compresscallfile(self):
+		try:
+			self.logger.info("Call dir %s" %self.calldir)
+			os.system("zip -r %s.zip %s" %(self.calldir, self.calldir))
+			if os.isfile("%s.zip" %(self.calldir)):
+				self.logger.info("Successfully zipped call file")
+			else:
+				self.logger.info("Could not compress call file")
+			
+				
+		except:
+			self.logger.error("Could not compress call file")
+			
 		

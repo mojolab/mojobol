@@ -187,7 +187,7 @@ class MojoAsteriskPlayer:
 			
 		if localizedresource.rtype=='TextLocalizedResource':
 			tempfilename="/tmp/"+localizedresource.guid
-			command="espeak -v hindi -s 100 -w %s.wav '%s'" %(tempfilename,localizedresource.resourcemap['text'].replace("'"," "))
+			command="espeak -s 100 -w %s.wav '%s'" %(tempfilename,localizedresource.resourcemap['text'].replace("'"," "))
 			self.logger.info("Running command %s" %command)
 			os.system(command)
 			os.system("sox %s.wav -r 8000 -c 1 %s.wav" %(tempfilename,tempfilename+"gsm"))
@@ -277,7 +277,7 @@ class MojoAsteriskPlayer:
 			audiofile=self.getAudioFile(explanation_resource)
 			play(audiofile)
 			timeout=step['timeout']
-			loopcount=step['number_of_attempts']
+			loopcount=int(step['number_of_attempts'].strip("'"))
 			for i in range(0,loopcount):
 				self.logger.info("Beginning menu loop %d" %i)
 				audiofile=self.getAudioFile(options_resource)
