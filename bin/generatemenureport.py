@@ -6,9 +6,13 @@ from mojobol import *
 from datetime import *
 from mojoasteriskplayer import *
 import yaml,datetime
+sys.path.append("/opt/LivingData/lib")
+from livdatcsvlib import *
 if __name__=="__main__":
 	ms=MojoBolResponder("/opt/mojobol/conf/sampleserver.conf")
 	reportsdir=os.path.join(ms.directory,ms.reportsdir)
+	if not os.path.exists(reportsdir):
+		os.mkdir(reportsdir)
 	print reportsdir
 	callsdir=os.path.join(ms.directory,ms.callsdir)
 	calls=os.listdir(callsdir)
@@ -37,13 +41,15 @@ if __name__=="__main__":
 				for choice in response['data']['userchoices']:
 					responserow['userchoice'+choice['attemptno']]=choice['keypress']
 				responses.append(responserow)
-	
-	for key in responses[0].keys():
-		print key+",",
-	print "\n"
-	for row in responses:
+	report=CSVFile()
+	report.colnames=responses[0].keys()
+	report.matrix=responses
+	for row in report.matrix:
 		for key in row.keys():
-			print row[key]+",",
-		print "\n"
+			if key not in report.colnames:
+				report.colnames.append(key)
+	report.padrows()
+	report.exportfile(os.path.join(reportsdir,datetime.datetime.now().strftime("%Y-%b-%d_%H_%M_%S")+".csv")) 
+	
 		
 		
