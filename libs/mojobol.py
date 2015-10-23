@@ -8,6 +8,7 @@ class MojoBolResponder:
 		config=ConfigParser.ConfigParser()
 		config.read(configfile)
 		self.directory=config.get("Server","serverdir")
+		self.maildir=config.get("Server","maildir")
 		self.name=config.get("Server","servername")
 		self.playertype=config.get("Server","playertype")
 		self.language=config.get("Server","language")
@@ -204,8 +205,10 @@ class MojoBolCall:
 	def compresscallfile(self):
 		try:
 			self.logger.info("Call dir %s" %self.calldir)
-			os.system("zip -r %s.zip %s" %(self.calldir, self.calldir))
-			if os.isfile("%s.zip" %(self.calldir)):
+			maildir=os.path.join(self.responder.directory,self.responder.maildir)
+			zipfile=os.path.join(maildir,self.callid+".zip")
+			os.system("zip -r %s %s" %(zipfile, self.calldir))
+			if os.isfile("%s" %(zipfile)):
 				self.logger.info("Successfully zipped call file")
 			else:
 				self.logger.info("Could not compress call file")

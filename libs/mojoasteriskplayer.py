@@ -180,7 +180,7 @@ class MojoAsteriskPlayer:
 		resourcename=resource.resourcemap['name']
 		self.logger.info("Getting audio file path for resource with name %s with guid %s" %(resourcename,resource.resource_guid))
 		localizedresource=resource.getLocalizedResources(language=self.language)[0]
-		self.logger.info("Localised resource type is %s"%localizedresource.rtype)
+		self.logger.info("Localised resource type is %s" %localizedresource.rtype)
 		if localizedresource.rtype=="ExternalAudio":
 			audiofilename=os.path.join(self.workflow.workflowpath,localizedresource.resourcemap['recorded_audio'])
 			self.logger.info("Filename is %s" %audiofilename)
