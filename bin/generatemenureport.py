@@ -41,15 +41,18 @@ if __name__=="__main__":
 				for choice in response['data']['userchoices']:
 					responserow['userchoice'+choice['attemptno']]=choice['keypress']
 				responses.append(responserow)
-	report=CSVFile()
-	report.colnames=responses[0].keys()
-	report.matrix=responses
-	for row in report.matrix:
-		for key in row.keys():
-			if key not in report.colnames:
-				report.colnames.append(key)
-	report.padrows()
-	report.exportfile(os.path.join(reportsdir,"MenuResponseReport-",datetime.datetime.now().strftime("%Y-%b-%d_%H_%M_%S")+".csv")) 
-	
+	if responses==[]:
+		print "No responses"
+	else:
+		report=CSVFile()
+		report.colnames=responses[0].keys()
+		report.matrix=responses
+		for row in report.matrix:
+			for key in row.keys():
+				if key not in report.colnames:
+					report.colnames.append(key)
+		report.padrows()
+		report.exportfile(os.path.join(reportsdir,"MenuResponseReport-",datetime.datetime.now().strftime("%Y-%b-%d_%H_%M_%S")+".csv")) 
+		
 		
 		
