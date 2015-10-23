@@ -49,7 +49,7 @@ if __name__=="__main__":
 			if key not in report.colnames:
 				report.colnames.append(key)
 	report.padrows()
-	report.exportfile(os.path.join(reportsdir,datetime.datetime.now().strftime("%Y-%b-%d_%H_%M_%S")+".csv")) 
+	report.exportfile(os.path.join(reportsdir,"MenuResponseReport-",datetime.datetime.now().strftime("%Y-%b-%d_%H_%M_%S")+".csv")) 
 	
 		
 		
