@@ -1,0 +1,4 @@
+Context: callback
+Extension: mojobolcall
+channel: SIP/NUMBER
+callerid: mojobol
