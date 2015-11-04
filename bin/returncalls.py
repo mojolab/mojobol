@@ -9,7 +9,7 @@ import yaml,datetime
 if __name__=="__main__":
 	while True:
 		numlist = os.popen("ls /var/spool/asterisk/pending").read().strip().split('\n')
-		linefreedom=os.popen("asterisk -rx 'sip show channels' | grep 192.168.0.3").read().strip()
+		linefreedom=os.popen("asterisk -rx 'sip show channels' | grep 10.178.202.139").read().strip()
 		linebusy=len(linefreedom)
 		if linebusy:
 			logging.info("Line busy...sleeping for 10 seconds")

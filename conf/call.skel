@@ -1,4 +1,4 @@
 Context: callback
 Extension: mojobolcall
-channel: SIP/NUMBER
-callerid: mojobol
+channel: SIP/NUMBER@10.178.202.139
+callerid: NUMBER
