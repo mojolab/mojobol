@@ -41,7 +41,10 @@ def newKeyDict():
 def RaiseZero():
     raise KeyPressException('0')
 def RaiseKey(key):
-    raise KeyPressException(key)
+    if key==1:
+		return "Skip"
+    #raise KeyPressException(key)
+
 def Nop():
     pass
 def removeTempFile(fname):
@@ -99,7 +102,9 @@ def play (fname, keyDict = newKeyDict()):
 		#if the user pressed a key...
 		c = chr(int(result))
 		if isinstance(keyDict[c],tuple):
-			keyDict[c][0](*keyDict[c][1])
+			val=keyDict[c][0](*keyDict[c][1])
+			if val=="Skip":
+				return val
 		else:
 			keyDict[c]()
 		return c
@@ -321,25 +326,71 @@ class MojoAsteriskPlayer:
 			print "Hanging Up"
 			return None
 		if step['type']=='record':
-			self.calllogger.info("Recording file from user")
+			self.calllogger.info("Recording step")
 			explanation_resource_guid=step['explanation_resource']['guid']
 			explanation_resource=self.workflow.getStepResourceByGuid(stepresources,explanation_resource_guid)
 			confirmation_resource_guid=step['confirmation_resource']['guid']
 			confirmation_resource=self.workflow.getStepResourceByGuid(stepresources,confirmation_resource_guid)
 			audiofile=self.getAudioFile(explanation_resource)
+			self.calllogger.info("playing explanation")
 			play(audiofile)
-			recordingfilename="callfile-"+callid+"-"+str(uuid.uuid4())
+			recordingfilename="callfile-"+call.callid+"-"+str(uuid.uuid4())
 			self.calllogger.info("file name =%s " %recordingfilename)
 			recordingfile=os.path.join(self.serverdir,self.callsdir,call.callid,recordingfilename)
 			self.calllogger.info("file path =%s " %recordingfile)
+			self.calllogger.info("Beginning recording "+ recordingfile)
+			
 			#debugPrint(recordingfile)
-			audiofile=self.getAudioFile(explanation_resource)
-			stopkey="#"+step['stop_key']
-			recordlen=int(step['timeout'])
+			#audiofile=self.getAudioFile(explanation_resource)
+			self.calllogger.info("Stopkey "+ step['stop_key'])
+			
+			stopkey="#"+step['stop_key'].strip("'")
+			
+			recordlen=int(step['timeout'].strip("'"))
+			self.calllogger.info("recordlen "+ step['timeout'])
 			result=record(recordingfile,stopkey,recordlen)
 			
 			#debugPrint("Result of recording = "+str(result))
 			audiofile=self.getAudioFile(confirmation_resource)
 			play(audiofile)
+			return None
+		if step['type']=='playloop':
+			self.calllogger.info("looping play")
+			playloopdir=step['loop_dir']
+			if os.path.isdir(playloopdir):
+				self.calllogger.info('playing files in %s' %playloopdir)
+				files=os.listdir(playloopdir)
+				for filename in files:
+					self.calllogger.info('playing file %s' %filename) 
+					keydict=newKeyDict()
+					keydict['1']=Nop
+					val=play(os.path.join(playloopdir,filename.strip(".wav")),keydict)
+					self.calllogger.info(val)
+			else:
+				self.calllogger.info('loop directory does not exist')
+			'''
+			audiofile=self.getAudioFile(explanation_resource)
+			self.calllogger.info("playing explanation")
+			play(audiofile)
+			recordingfilename="callfile-"+call.callid+"-"+str(uuid.uuid4())
+			self.calllogger.info("file name =%s " %recordingfilename)
+			recordingfile=os.path.join(self.serverdir,self.callsdir,call.callid,recordingfilename)
+			self.calllogger.info("file path =%s " %recordingfile)
+			self.calllogger.info("Beginning recording "+ recordingfile)
+			
+			#debugPrint(recordingfile)
+			#audiofile=self.getAudioFile(explanation_resource)
+			self.calllogger.info("Stopkey "+ step['stop_key'])
+			
+			stopkey="#"+step['stop_key'].strip("'")
+			
+			recordlen=int(step['timeout'].strip("'"))
+			self.calllogger.info("recordlen "+ step['timeout'])
+			result=record(recordingfile,stopkey,recordlen)
+			
+			#debugPrint("Result of recording = "+str(result))
+			audiofile=self.getAudioFile(confirmation_resource)
+			play(audiofile)
+			'''
 			return None
 		

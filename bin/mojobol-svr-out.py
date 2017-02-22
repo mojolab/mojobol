@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 sys.path.append("/opt/mojobol/libs")
-sys.path.append("/opt/LivingData/lib")
-sys.path.append("/opt/MojoMail/mojomail")
+sys.path.append("/opt/livingdata/lib")
+sys.path.append("/opt/mojomailman/mojomail")
 from mojobol import *
 from datetime import *
 from mojoasteriskplayer import *

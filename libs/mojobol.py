@@ -32,6 +32,12 @@ class MojoBolResponder:
 				f.close()
 			except:
 				print "Could not create server logfile"
+		callpath=os.path.join(self.directory,self.callsdir)
+		if os.path.isdir(callpath)==False:
+			try:
+				os.mkdir(callpath)
+			except:
+				print "Could not create server call directory"
 				
 		fh = logging.FileHandler(os.path.join(self.directory,self.logfile))
 		self.logger=logging.getLogger(self.name)
@@ -169,10 +175,11 @@ class MojoBolCall:
 		self.menufilename="menuresponsefile-"+self.callid+".yml"
 		self.menufile=os.path.join(self.responder.directory,self.responder.callsdir,self.callid,self.menufilename)
 		if os.path.isdir(self.calldir)==False:
+			print "Trying to make call directory", self.calldir
 			try:
 				os.mkdir(self.calldir)
 			except:
-				print "Could not create server directory"
+				print "Could not create call directory"
 		self.logfile=os.path.join(self.calldir,"log",self.callid+".log")
 		logpath=os.path.dirname(os.path.join(self.calldir,self.logfile))
 		if os.path.isdir(logpath)==False:
@@ -182,7 +189,7 @@ class MojoBolCall:
 				f.write("Starting Logfile")
 				f.close()
 			except:
-				print "Could not create server logfile"
+				print "Could not create call logfile"
 				
 		fh = logging.FileHandler(os.path.join(self.calldir,self.logfile))
 		self.logger=logging.getLogger(self.callid)
