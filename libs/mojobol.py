@@ -163,9 +163,9 @@ class MojoBolCall:
 		except:
 			self.callerid="Unknown"
 		self.responder=responder
+		globalcallog=os.path.join(self.responder.directory,self.responder.callsdir,"calllog")
 		#self.responder.logger.info("Hello World")
 		self.responder.logger.info(str(env))
-		
 		self.starttime=datetime.datetime.now()
 		self.stoptime=self.starttime
 		self.callid=self.callerid+"-"+self.responder.name+"-"+self.starttime.strftime("%Y-%b-%d-%H-%M-%S")
@@ -203,7 +203,13 @@ class MojoBolCall:
 		fh.setFormatter(formatter)
 		self.logger.addHandler(fh)
 		self.logger.info("MojoBol call with id %s started" %self.callid)
-	
+		if os.path.exists(globalcallog):
+			self.logger.info("Removing global log")
+			os.remove(globalcallog)
+		self.logger.info("Creating symlink")
+		print os.path.join(self.calldir,self.logfile),globalcallog
+		os.symlink(os.path.join(self.calldir,self.logfile),globalcallog)
+		
 	def endcall(self):
 		self.stoptime=datetime.datetime.now()
 		calllength=self.stoptime-self.starttime
