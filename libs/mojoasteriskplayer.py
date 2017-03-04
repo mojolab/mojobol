@@ -353,6 +353,8 @@ class MojoAsteriskPlayer:
 			#debugPrint("Result of recording = "+str(result))
 			audiofile=self.getAudioFile(confirmation_resource)
 			play(audiofile)
+			audiofile=recordingfile
+			play(audiofile)
 			return None
 		if step['type']=='playloop':
 			self.calllogger.info("looping play")
