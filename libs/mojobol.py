@@ -17,6 +17,8 @@ class MojoBolResponder:
 		self.logfile=config.get("Server","logfile")
 		self.callsdir=config.get("Server","callsdir")
 		self.reportsdir=config.get("Server","reportsdir")
+		self.callkey=config.get("Server","callkey")
+		self.tsformat=config.get("Server","tsformat")
 		self.workflow=MojoBolWorkflow(self.workflowpath)
 		if os.path.isdir(self.directory)==False:
 			try:
