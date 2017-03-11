@@ -366,7 +366,7 @@ class MojoAsteriskPlayer:
 					self.calllogger.info('playing file %s' %filename) 
 					keydict=newKeyDict()
 					keydict['1']=Nop
-					val=play(os.path.join(playloopdir,filename.strip(".wav")),keydict)
+					val=play(os.path.join(playloopdir,filename.split(".")[0]),keydict)
 					self.calllogger.info(val)
 			else:
 				self.calllogger.info('Loop directory does not exist')
