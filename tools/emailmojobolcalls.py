@@ -56,6 +56,6 @@ for call in calls:
 		msg=messager.composemessage(mailer.outusername,subdict,bodydict,payload)
 		mailer.sendmsg(msg)
 		f=open(os.path.join(callsdir,call,"mailed"),"w")
-		f.write(datetime.now().strftime("%Y-%b-%d %H:%M:%S")
+		f.write(datetime.now().strftime("%Y-%b-%d %H:%M:%S"))
 		f.close()
 		
