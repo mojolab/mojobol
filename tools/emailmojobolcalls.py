@@ -49,13 +49,16 @@ for call in calls:
 					f=open(os.path.join(callsdir,call,filename),"rb")
 					bodydict['$CONTENT']+="\nMenu Responses\n"+f.read()
 					f.close()
-		if payload=="":
-			subdict['META']="NOREC"
-		else:
-			subdict['META']="REC"
-		msg=messager.composemessage(mailer.outusername,subdict,bodydict,payload)
-		mailer.sendmsg(msg)
-		f=open(os.path.join(callsdir,call,"mailed"),"w")
-		f.write(datetime.now().strftime("%Y-%b-%d %H:%M:%S")+"\n")
-		f.close()
+			if payload=="":
+				subdict['META']="NOREC"
+			else:
+				subdict['META']="REC"
+			if "mailed" not in files:
+				msg=messager.composemessage(mailer.outusername,subdict,bodydict,payload)
+				mailer.sendmsg(msg)
+				f=open(os.path.join(callsdir,call,"mailed"),"w")
+				f.write(datetime.now().strftime("%Y-%b-%d %H:%M:%S")+"\n")
+				f.close()
+			else:
+				print "Already mailed"
 		
