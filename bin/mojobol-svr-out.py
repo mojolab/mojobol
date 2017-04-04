@@ -13,20 +13,23 @@ from livdatcsvlib import *
 if __name__=="__main__":
 	calloutsheet=CSVFile()
 	calloutsheet.importfile(sys.argv[1])
-	ms=MojoBolResponder("/opt/mojobol/conf/sampleserver.conf")
+	ms=MojoBolResponder("/opt/voh/voh.conf")
 	callsdir=os.path.join(ms.directory,ms.callsdir)
 	reportsdir=os.path.join(ms.directory,ms.reportsdir)
 	
 	callsbefore=os.listdir(callsdir)
 	print calloutsheet.colnames
 	for row in calloutsheet.matrix:
+		print row
 		num=row['number']
-		linefreedom=os.popen("asterisk -rx 'sip show channels' | grep 10.178.202.139").read().strip()
+		linefreedom=os.popen("asterisk -rx 'sip show channels' | grep 10.0.0.25").read().strip()
 		linebusy=len(linefreedom)
-		if linebusy:
+		while linebusy:
 			print "Line busy...sleeping for 10 seconds"
 			time.sleep(10)
-			continue
+			#continue
+			linefreedom=os.popen("asterisk -rx 'sip show channels' | grep 10.0.0.25").read().strip()
+			linebusy=len(linefreedom)
 		#if num[:3]=="+91":
 		#	prov=num[3:][:5]
 		#else:
@@ -41,7 +44,7 @@ if __name__=="__main__":
 			os.system("mv /opt/mojobol/conf/%s.call /var/spool/asterisk/outgoing" %num)
 			#logging.info("Removing number %s from queue..." %num)
 			#os.system("rm /var/spool/asterisk/pending/%s" %num)
-		time.sleep(60)
+		time.sleep(200)
 	calls=[]
 	callsafter=os.listdir(callsdir)
 	for call in callsafter:
