@@ -19,7 +19,7 @@ if __name__=="__main__":
 	
 	callsbefore=os.listdir(callsdir)
 	print calloutsheet.colnames
-	for row in calloutsheet.matrix:
+	for 	row in calloutsheet.matrix:
 		print row
 		num=row['number']
 		linefreedom=os.popen("asterisk -rx 'sip show channels' | grep 10.0.0.25").read().strip()
