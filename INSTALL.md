@@ -3,9 +3,9 @@
 ## Install dependencies
 ======================================================
 ```
-apt-get install lame asterisk  wget gcc g++ bison zlib1g openssl  python-setuptools espeak python-dev git
-easy_install oauth2
-easy_install pyyaml
+sudo apt-get install lame asterisk  wget gcc g++ bison zlib1g openssl  python-setuptools espeak python-dev git python-pip
+sudo -H pip install oauth2
+sudo -H pip install pyyaml
 ```
 
 ## Install codebase
