@@ -33,13 +33,13 @@ class MojoBolResponder:
 				f.write("Starting Logfile")
 				f.close()
 			except:
-				print "Could not create server logfile"
+				print("Could not create server logfile")
 		callpath=os.path.join(self.directory,self.callsdir)
 		if os.path.isdir(callpath)==False:
 			try:
 				os.mkdir(callpath)
 			except:
-				print "Could not create server call directory"
+				print("Could not create server call directory")
 				
 		fh = logging.FileHandler(os.path.join(self.directory,self.logfile))
 		self.logger=logging.getLogger(self.name)
@@ -65,7 +65,7 @@ class MojoBolResponder:
 			if step['root']==True:
 				rootstep=step
 		if rootstep=={}:
-			print "No root step"
+			print("No root step")
 		else:
 			curstep=rootstep
 			nextid=self.player.executeStep(curstep,call)
@@ -88,7 +88,7 @@ class MojoBolWorkflow:
 		ppr=pprint.PrettyPrinter(indent=4)
 		for step in self.steps:
 			ppr=pprint.PrettyPrinter(indent=4)
-			print "Step ID", step['id']
+			print("Step ID", step['id'])
 			ppr.pprint(step)
 	def getStepByID(self,stepid):
 		for step in self.steps:
@@ -103,12 +103,12 @@ class MojoBolWorkflow:
 		return steps
 	def printStepResources(self,step):
 		resourcelist=self.getStepResources(step)
-		print "**** Resources for step " + str(step['id']) + " ************"
+		print("**** Resources for step " + str(step['id']) + " ************")
 		for resource in resourcelist:
 			lresourcelist=resource.getLocalizedResources()
 			for lresource in lresourcelist:
 				#ppr.pprint(lresource.resourcemap)
-				print lresource.rtype
+				print(lresource.rtype)
 	def getStepResources(self,step):
 		resourcelist=[]
 		for k,v in step.iteritems():
@@ -177,11 +177,11 @@ class MojoBolCall:
 		self.menufilename="menuresponsefile-"+self.callid+".yml"
 		self.menufile=os.path.join(self.responder.directory,self.responder.callsdir,self.callid,self.menufilename)
 		if os.path.isdir(self.calldir)==False:
-			print "Trying to make call directory", self.calldir
+			print("Trying to make call directory", self.calldir)
 			try:
 				os.mkdir(self.calldir)
 			except:
-				print "Could not create call directory"
+				print("Could not create call directory")
 		self.logfile=os.path.join(self.calldir,"log",self.callid+".log")
 		logpath=os.path.dirname(os.path.join(self.calldir,self.logfile))
 		if os.path.isdir(logpath)==False:
@@ -191,7 +191,7 @@ class MojoBolCall:
 				f.write("Starting Logfile")
 				f.close()
 			except:
-				print "Could not create call logfile"
+				print("Could not create call logfile")
 				
 		fh = logging.FileHandler(os.path.join(self.calldir,self.logfile))
 		self.logger=logging.getLogger(self.callid)
@@ -209,7 +209,7 @@ class MojoBolCall:
 			self.logger.info("Removing global log")
 			os.remove(globalcallog)
 		self.logger.info("Creating symlink")
-		print os.path.join(self.calldir,self.logfile),globalcallog
+		print(os.path.join(self.calldir,self.logfile),globalcallog)
 		os.symlink(os.path.join(self.calldir,self.logfile),globalcallog)
 		
 	def endcall(self):

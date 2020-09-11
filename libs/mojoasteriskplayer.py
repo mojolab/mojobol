@@ -217,7 +217,7 @@ class MojoAsteriskPlayer:
 		timeout=step['timeout']
 		mindigits=step['min_input_length']
 		maxdigits=step['max_input_length']
-		print "Capturing"
+		print("Capturing")
 		loopcount=step['number_of_attempts']
 		for i in range(0,loopcount):
 			audiofile=self.getAudioFile(instructions_resource)
@@ -229,7 +229,7 @@ class MojoAsteriskPlayer:
 			else:
 				audiofile=self.getAudioFile(invalid_resource)
 				play(audiofile)  
-		print "Hanging Up"
+		print("Hanging Up")
 		return None
 	def executeStep(self,step,call):
 		self.logger.info("Executing step id %s name %s" %(step['id'],step['name']))
@@ -252,7 +252,7 @@ class MojoAsteriskPlayer:
 			timeout=step['timeout']
 			mindigits=step['min_input_length']
 			maxdigits=step['max_input_length']
-			print "Capturing"
+			print("Capturing")
 			loopcount=step['number_of_attempts']
 			for i in range(0,loopcount):
 				audiofile=self.getAudioFile(instructions_resource)
@@ -278,8 +278,8 @@ class MojoAsteriskPlayer:
 			response={}
 			response['id']=str(uuid.uuid4())
 			self.calllogger.info("User presented with menu having options %s" %str(step['options']))
-			print "Playing explanation resource", step['explanation_resource']
-			print "Playing options resource", step['options_resource']
+			print("Playing explanation resource", step['explanation_resource'])
+			print("Playing options resource", step['options_resource'])
 			options_resource_guid=step['options_resource']['guid']
 			options_resource=self.workflow.getStepResourceByGuid(stepresources,options_resource_guid)
 			explanation_resource_guid=step['explanation_resource']['guid']
@@ -300,7 +300,7 @@ class MojoAsteriskPlayer:
 				#debugPrint("Captured keys ="+result)
 				keypress=result
 				userchoice['keypress']=keypress
-				print "Got keypress ",keypress
+				print("Got keypress ",keypress)
 				self.calllogger.info("User chose %s" %keypress)
 				for option in step['options']:
 					if option['number']==keypress:
@@ -323,7 +323,7 @@ class MojoAsteriskPlayer:
 			f.write(yaml.dump(responses,default_flow_style=False))
 			f.write("\n")
 			f.close()
-			print "Hanging Up"
+			print("Hanging Up")
 			return None
 		if step['type']=='record':
 			self.calllogger.info("Recording step")
