@@ -1,11 +1,11 @@
-import os,sys,ConfigParser,yaml,pprint,time, datetime
+import os,sys,configparser,yaml,pprint,time, datetime
 sys.path.append("/opt/mojobol/libs")
 from mojoasteriskplayer import *
 import logging
 
 class MojoBolResponder:
 	def __init__(self,configfile):
-		config=ConfigParser.ConfigParser()
+		config=configparser.RawConfigParser()
 		config.read(configfile)
 		self.directory=config.get("Server","serverdir")
 		self.maildir=config.get("Server","maildir")
@@ -208,7 +208,7 @@ class MojoBolCall:
 		if os.path.exists(globalcallog):
 			self.logger.info("Removing global log")
 			os.remove(globalcallog)
-		self.logger.info("Creating symlink")
+		self.logger.info("Creating symlink")	
 		print(os.path.join(self.calldir,self.logfile),globalcallog)
 		os.symlink(os.path.join(self.calldir,self.logfile),globalcallog)
 		
