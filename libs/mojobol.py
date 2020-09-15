@@ -26,8 +26,8 @@ class MojoBolResponder:
 		self.tsformat=config.get("Server","tsformat")
 		self.workflow=MojoBolWorkflow(self.workflowpath)
 
-		gauth = GoogleAuth()
-		gauth.LoadCredentialsFile("client_secrets.json")
+#		gauth = GoogleAuth()
+#		gauth.LoadCredentialsFile("client_secrets.json")
 
 
 		if os.path.isdir(self.directory)==False:
