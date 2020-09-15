@@ -256,6 +256,7 @@ class MojoBolCall:
 				
 			df.to_csv("/opt/mojobol_data.csv",index=False)
 		else:
+			print(self.calldata)
 			df=pandas.DataFrame()
 			df.append(self.calldata,ignore_index=True)
 			df.to_csv("/opt/mojobol_data.csv",index=False)
