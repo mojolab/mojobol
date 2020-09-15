@@ -252,13 +252,12 @@ class MojoBolCall:
 		if "mojobol_data.csv" in os.listdir("/opt"):
 			df=pandas.read_csv("/opt/mojobol_data.csv")
 			self.logger.info(self.calldata)	
-			df.append(self.calldata,ignore_index=True)
-				
+			df=df.append(self.calldata,ignore_index=True)	
 			df.to_csv("/opt/mojobol_data.csv",index=False)
 		else:
 			self.logger.info(self.calldata)
 			df=pandas.DataFrame()
-			df.append(self.calldata,ignore_index=True)
+			df=df.append(self.calldata,ignore_index=True)
 			df.to_csv("/opt/mojobol_data.csv",index=False)
 
 		
