@@ -7,6 +7,7 @@ class MojoBolResponder:
 	def __init__(self,configfile):
 		config=configparser.RawConfigParser()
 		config.read(configfile)
+		self.link_for_drive_key=config.get("Server","serverkey")
 		self.directory=config.get("Server","serverdir")
 		self.maildir=config.get("Server","maildir")
 		self.name=config.get("Server","servername")

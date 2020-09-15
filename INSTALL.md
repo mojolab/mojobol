@@ -12,7 +12,7 @@ sudo -H pip install pyyaml
 ======================================================
  ```
  cd /opt 
- git clone https://github.com/mojolab/mojobol.git
+ git clone https://gitlab.com/mojolab/mojobol.git
  cd mojobol
  sudo ln -s /opt/mojobol/bin /usr/share/asterisk/agi-bin/mojobol
 ```
