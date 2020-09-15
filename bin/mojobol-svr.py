@@ -12,3 +12,4 @@ if __name__ == "__main__":
     p = call.responder.parse_workflow(call)
     call.endcall()
     call.compresscallfile()
+    call.updatedf()
