@@ -2,6 +2,10 @@ import os,sys,configparser,yaml,pprint,time, datetime
 sys.path.append("/opt/mojobol/libs")
 from mojoasteriskplayer import *
 import logging
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+import pandas
+
 
 class MojoBolResponder:
 	def __init__(self,configfile):
@@ -21,6 +25,11 @@ class MojoBolResponder:
 		self.callkey=config.get("Server","callkey")
 		self.tsformat=config.get("Server","tsformat")
 		self.workflow=MojoBolWorkflow(self.workflowpath)
+
+		gauth = GoogleAuth()
+		gauth.LoadCredentialsFile("client_secrets.json")
+
+
 		if os.path.isdir(self.directory)==False:
 			try:
 				os.mkdir(self.directory)
@@ -161,17 +170,21 @@ class MojoBolWorkFlowLocalizedResource:
 		
 class MojoBolCall:
 	def __init__(self,responder,env):
+		self.calldata={}
 		try:
 			self.callerid = env['agi_callerid']
 		except:
 			self.callerid="Unknown"
+		self.calldata["caller_id"]=self.callerid
 		self.responder=responder
 		globalcallog=os.path.join(self.responder.directory,self.responder.callsdir,"calllog")
 		#self.responder.logger.info("Hello World")
 		self.responder.logger.info(str(env))
 		self.starttime=datetime.datetime.now()
+		self.calldata["start_time"]=self.starttime
 		self.stoptime=self.starttime
 		self.callid=self.callerid+"-"+self.responder.name+"-"+self.starttime.strftime("%Y-%b-%d-%H-%M-%S")
+		self.calldata["call_id"]=self.callid
 		self.loglevel=self.responder.loglevel
 		#create directory for call files
 		self.calldir=os.path.join(self.responder.directory,self.responder.callsdir,self.callid)
@@ -215,7 +228,9 @@ class MojoBolCall:
 		
 	def endcall(self):
 		self.stoptime=datetime.datetime.now()
+		self.calldata["end_time"]=self.stoptime
 		calllength=self.stoptime-self.starttime
+		self.calldata["call_length"]=calllength
 		self.logger.info("Call ended at %s" %(self.stoptime.strftime("%Y-%b-%d %H:%M:%S")))
 		self.logger.info("Call duration: %s" %(str(calllength.seconds+1)))
 	def compresscallfile(self):
@@ -232,5 +247,15 @@ class MojoBolCall:
 				
 		except:
 			self.logger.error("Could not compress call file")
-			
+
+	def updatedf(self):
+		if "mojobol_data.csv" in os.listdir("/opt"):
+			df=pandas.read_csv("/opt/mojobol_data.csv")
+			df.append(self.calldata,ignore_index=True)		
+			df.to_csv("/opt/mojobol_data.csv",index=False)
+		else:
+			df=pandas.DataFrame()
+			df.append(self.calldata,ignore_index=True)
+			df.to_csv("/opt/mojobol_data.csv",index=False)
+
 		
