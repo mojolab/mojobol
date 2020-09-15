@@ -2,8 +2,8 @@ import os,sys,configparser,yaml,pprint,time, datetime
 sys.path.append("/opt/mojobol/libs")
 from mojoasteriskplayer import *
 import logging
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
+#from pydrive.auth import GoogleAuth
+#:from pydrive.drive import GoogleDrive
 import pandas
 
 
@@ -11,7 +11,7 @@ class MojoBolResponder:
 	def __init__(self,configfile):
 		config=configparser.RawConfigParser()
 		config.read(configfile)
-		self.link_for_drive_key=config.get("Server","serverkey")
+		#self.link_for_drive_key=config.get("Server","serverkey")
 		self.directory=config.get("Server","serverdir")
 		self.maildir=config.get("Server","maildir")
 		self.name=config.get("Server","servername")
@@ -251,7 +251,9 @@ class MojoBolCall:
 	def updatedf(self):
 		if "mojobol_data.csv" in os.listdir("/opt"):
 			df=pandas.read_csv("/opt/mojobol_data.csv")
-			df.append(self.calldata,ignore_index=True)		
+			df.print(self.calldata)	
+			df.append(self.calldata,ignore_index=True)
+				
 			df.to_csv("/opt/mojobol_data.csv",index=False)
 		else:
 			df=pandas.DataFrame()
