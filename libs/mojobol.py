@@ -25,7 +25,7 @@ class MojoBolResponder:
 			try:
 				os.mkdir(self.directory)
 			except:
-				print "Could not create server directory"
+				print("Could not create server directory")
 		logpath=os.path.dirname(os.path.join(self.directory,self.logfile))
 		if os.path.isdir(logpath)==False:
 			try:
@@ -80,7 +80,7 @@ class MojoBolResponder:
 class MojoBolWorkflow:
 	def __init__(self,path_to_workflow):
 		yamlfile=os.popen("ls '%s'" %(os.path.join(path_to_workflow,"workflow.yml"))).read().strip()
-		print yamlfile
+		print(yamlfile)
 		f=open(yamlfile,"r")
 		self.steps=yaml.safe_load(f)
 		f.close()
@@ -112,7 +112,7 @@ class MojoBolWorkflow:
 				print(lresource.rtype)
 	def getStepResources(self,step):
 		resourcelist=[]
-		for k,v in step.iteritems():
+		for k,v in step.items():
 			if "resource" in k:
 				resource=MojoBolWorkflowResource(self.workflowpath,v['guid'])
 				resourcelist.append(resource)
