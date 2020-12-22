@@ -7,15 +7,28 @@ from dash.dependencies import Input, Output
 import plotly.express as px #(need to pip install plotly==4.4.1)
 
 df = pd.read_csv("mojobol_data.csv",index_col='call_id')
+def generate_table(dataframe, max_rows=10):
+    return html.Table([
+        html.Thead(
+            html.Tr([html.Th(col) for col in dataframe.columns])
+        ),
+        html.Tbody([
+            html.Tr([
+                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
+            ]) for i in range(min(len(dataframe), max_rows))
+        ])
+    ])
 
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']    
 # you need to include __name__ in your Dash constructor if
 # you plan to use a custom CSS or JavaScript in your Dash apps
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 #---------------------------------------------------------------
 app.layout = html.Div([
     html.Div([
-        html.Label(['Mojobol Data']),
+        html.H1(['Mojobol Data']),
+        generate_table(df),
         dcc.Dropdown(
             id='my_dropdown',
             options=
@@ -30,8 +43,7 @@ app.layout = html.Div([
 
     html.Div([
         dcc.Graph(id='the_graph')
-    ]),
-
+    ]), 
 ])
 
 #---------------------------------------------------------------
