@@ -7,7 +7,7 @@ from datetime import *
 from mojobol import *
 if __name__ == "__main__":
     env = read_agi_environment()
-    ms = MojoBolResponder("/opt/voh/voh.conf")
+    ms = MojoBolResponder("/opt/shwaasivr/voh.conf")
     call = MojoBolCall(ms, env)
     p = call.responder.parse_workflow(call)
     call.endcall()
