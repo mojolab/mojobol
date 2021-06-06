@@ -60,9 +60,11 @@ Different SIP Gateways work differently. The sample configuration under the sect
 
 
 ### Autoconfigure Asterisk
+
+```
 # cd mojobol
 # sh setupasterisk.sh
-
+```
 
 
 ### Create workflows
