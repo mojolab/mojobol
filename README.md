@@ -1,8 +1,8 @@
 # mojoबोल
 IVR platform that combines the best of as many worlds as possible. 
 
-Mojबोल uses the work of the Swara (http://github.com/mojolab/swara) platform to create a new engine that can read, 
-interpret and play as an automated telephonic response, call flows made in Verboice Desinger (http://github.com/instedd/verboice) 
+Mojबोल uses the work of the Swara (http://gitlab.com/mojolab/swara) platform to create a new engine that can read, 
+interpret and play as an automated telephonic response, call flows made in Verboice Desinger (http://gitlab.com/instedd/verboice) 
 
 The call flows can be designed and exported from http://verboice.com
 Currently supported Verboice call flow steps are 
@@ -31,7 +31,7 @@ Currently supported Verboice call flow steps are
 
 ```
 # cd /opt 
-# git clone https://github.com/mojolab/mojobol.git
+# git clone https://gitlab.com/mojolab/mojobol.git
 # cd mojobol
 # sudo ln -s /opt/mojobol/bin /usr/share/asterisk/agi-bin/mojobol
 
