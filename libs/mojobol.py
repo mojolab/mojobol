@@ -4,7 +4,7 @@ from mojoasteriskplayer import *
 import logging
 #from pydrive.auth import GoogleAuth
 #:from pydrive.drive import GoogleDrive
-import pandas
+# import pandas
 
 
 class MojoBolResponder:
