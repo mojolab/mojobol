@@ -30,4 +30,4 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install pyyaml 
 RUN mkdir -p /opt/mojobol
 RUN sudo ln -s /opt/mojobol/bin /usr/share/asterisk/agi-bin/mojobol
-RUN cd /opt/mojobol
+#RUN cd /opt/mojobol && sh setupasterisk.sh
