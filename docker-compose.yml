@@ -4,7 +4,7 @@ services:
     build: .
     ports:
       - "5000:5000"
-      - "22:2222"
+      - "2222:2222"
       # Mount the current working directory into the container as /opt/mojobol
     volumes:
       - ../mojobol:/opt/mojobol
