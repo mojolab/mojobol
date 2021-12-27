@@ -18,8 +18,15 @@ Currently supported Verboice call flow steps are
 
 ## Installation Instructions
 
+```
+docker compose up
+
+docker run -d -it --name testrun --mount type=bind,source=/home/arjun/
+
+dev/mojobol/,target=/opt/mojobol mojobol_core:latest
 
 ### Install dependencies
+```
 
 ```
 # apt-get install lame asterisk  wget gcc g++ bison zlib1g openssl  python-setuptools espeak python-dev git
