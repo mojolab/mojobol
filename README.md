@@ -1,3 +1,6 @@
+
+![image](https://user-images.githubusercontent.com/743783/147661131-d1354f72-698c-49b6-b27c-cd167eeb77f1.png)
+
 # mojoबोल
 IVR platform that combines the best of as many worlds as possible. 
 
