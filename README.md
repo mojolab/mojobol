@@ -19,6 +19,17 @@ Currently supported Verboice call flow steps are
 4. Key input (capture)
 
 
+## Docker Installation
+
+After cloning the repository, build the Docker image from the docker file. Once the image is built run it with the docker run command as follows
+
+```
+cd <mojobol source directory>
+docker run -d -it --name mojobol --mount type=bind,source=$PWD,target=/opt/mojobol mojobol:latest
+
+```
+
+
 ## Installation Instructions
 
 ```
