@@ -28,6 +28,29 @@ cd <mojobol source directory>
 docker run -d -it --name mojobol --mount type=bind,source=$PWD,target=/opt/mojobol mojobol:latest
 
 ```
+### Docker for windows
+
+Step 1: After installing the docker image open docker in your windows desktop
+
+Step 2: Click on run infront of the mojobol image
+
+![image](images/docker.png)
+
+Step 3: Click on optional details after the pop up opens
+
+
+Step 4:
+
+In the host path column fill path to your mojobol repo or select the repo by clicking on the ... icon in the corner
+in the container path column enter /opt/mojobol
+
+![image](images/docker(1).png)
+
+
+
+
+
+
 
 
 ## Installation Instructions
