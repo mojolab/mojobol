@@ -21,19 +21,26 @@ def check_mojobol_svr():
         print('mojobol-svr.py is not present in /usr/share/asterisk/agi-bin/mojobol')
         return False
 
-#check if /opt/mojobol/conf/local/currentcallflow.conf is a simlink 
+#if /opt/mojobol/conf/local/currentcallflow.conf exists 
+# check if /opt/mojobol/conf/local/currentcallflow.conf is a simlink 
+# else return False
 def check_currentcallflow_conf():
-    currentcallflow_conf = os.system('ls -l /opt/mojobol/conf/local/currentcallflow.conf | grep "->"')
-    if currentcallflow_conf == 0:
-        print('/opt/mojobol/conf/local/currentcallflow.conf is a simlink')
-        return True
+    currentcallflow_conf = os.path.exists('/opt/mojobol/conf/local/currentcallflow.conf')
+    if currentcallflow_conf:
+        currentcallflow_conf_link = os.path.islink('/opt/mojobol/conf/local/currentcallflow.conf')
+        if currentcallflow_conf_link:
+            print('/opt/mojobol/conf/local/currentcallflow.conf is a simlink')
+            return True
+        else:
+            print('/opt/mojobol/conf/local/currentcallflow.conf is not a simlink')
+            return False
     else:
-        print('/opt/mojobol/conf/local/currentcallflow.conf is not a simlink')
+        print('/opt/mojobol/conf/local/currentcallflow.conf does not exist')
         return False
+
 
 if __name__=="__main__":
     if check_asterisk() and check_mojobol_svr() and check_currentcallflow_conf():
         print('All sanity checks passed')
     else:
         print('Some sanity checks failed')
-        
