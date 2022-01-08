@@ -19,6 +19,9 @@ Currently supported Verboice call flow steps are
 4. Key input (capture)
 
 
+sh -c "$(curl -fsSL https://raw.github.com/mojolab/mojobol/fix-install/install.sh"
+
+
 ## Docker Installation
 
 After cloning the repository, build the Docker image from the docker file. Once the image is built run it with the docker run command as follows
