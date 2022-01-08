@@ -30,3 +30,10 @@ def check_currentcallflow_conf():
     else:
         print('/opt/mojobol/conf/local/currentcallflow.conf is not a simlink')
         return False
+
+if __name__=="__main__":
+    if check_asterisk() and check_mojobol_svr() and check_currentcallflow_conf():
+        print('All sanity checks passed')
+    else:
+        print('Some sanity checks failed')
+        

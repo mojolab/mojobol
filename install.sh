@@ -11,8 +11,7 @@ apt install -y python3 python3-pip python3-dev ipython3 zsh git vim curl sudo wg
 
 # If /opt/mojobol already exists, inform user else enter /opt and clone https://github.com/mojolab/mojobol
 if [ -d /opt/mojobol ]; then
-    echo "Mojobol is already installed. Exiting..."
-    exit
+    echo "Mojobol is already installed."
 else
     echo "Installing Mojobol..."
     cd /opt
