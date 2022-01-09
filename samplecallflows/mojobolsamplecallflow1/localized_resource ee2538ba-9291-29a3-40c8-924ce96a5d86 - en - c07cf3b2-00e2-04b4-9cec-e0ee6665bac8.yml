@@ -1,7 +1,7 @@
 ---
 language: en
 text: Welcome Message1
-recorded_audio: /opt/voh/vohprompts/welcome
+recorded_audio: /opt/mojobol/samplecallflows/mojobolsamplecallflow1/mojobolsamplecallflow1prompts/welcome
 url: 
 type: ExternalAudio
 created_at: 2017-02-22 12:22:54.000000000 Z

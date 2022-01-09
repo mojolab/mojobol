@@ -1,7 +1,7 @@
 ---
 language: en
 text: thank you, your message has been recorded
-recorded_audio: /opt/voh/vohprompts/thankyourecorded
+recorded_audio: /opt/mojobol/samplecallflows/mojobolsamplecallflow1/mojobolsamplecallflow1prompts/thankyourecorded
 url: 
 type: ExternalAudio
 created_at: 2017-02-22 12:33:23.000000000 Z

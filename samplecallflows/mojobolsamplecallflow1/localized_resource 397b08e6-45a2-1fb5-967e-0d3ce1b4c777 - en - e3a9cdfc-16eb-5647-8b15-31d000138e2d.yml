@@ -1,7 +1,7 @@
 ---
 language: en
 text: Explanation
-recorded_audio: /opt/voh/vohprompts/explanation
+recorded_audio: /opt/mojobol/samplecallflows/mojobolsamplecallflow1/mojobolsamplecallflow1prompts/explanation
 url: 
 type: ExternalAudio
 created_at: 2017-02-22 12:23:37.000000000 Z
