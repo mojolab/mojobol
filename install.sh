@@ -15,7 +15,7 @@ if [ -d /opt/mojobol ]; then
 else
     echo "Installing Mojobol..."
     cd /opt
-    git clone https://github.com/mojolab/mojobol
+    git clone --branch fix-install https://github.com/mojolab/mojobol
 fi
 
 #If /opt/mojobol/conf/local does not exist create it
