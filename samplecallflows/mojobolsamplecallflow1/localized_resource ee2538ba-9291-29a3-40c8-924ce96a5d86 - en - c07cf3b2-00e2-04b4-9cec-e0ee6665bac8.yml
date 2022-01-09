@@ -1,0 +1,12 @@
+---
+language: en
+text: Welcome Message1
+recorded_audio: /opt/voh/vohprompts/welcome
+url: 
+type: ExternalAudio
+created_at: 2017-02-22 12:22:54.000000000 Z
+updated_at: 2017-02-22 12:22:54.000000000 Z
+extras: {}
+uploaded_audio: 
+guid: c07cf3b2-00e2-04b4-9cec-e0ee6665bac8
+resource_guid: ee2538ba-9291-29a3-40c8-924ce96a5d86

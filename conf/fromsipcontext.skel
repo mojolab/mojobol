@@ -1,0 +1,10 @@
+exten => <EXT_NAME>,1,NoOp(provider callback to ${CALLERID(num)})
+exten => <EXT_NAME>,n,GotoIf($["${CALLERID(num):0:2}" != "91"]?nonineone)
+exten => <EXT_NAME>,n,NoOp(Changing Caller ID number from ${CALLERID(num)} to ${CALLERID(num):2})
+exten => <EXT_NAME>,n,Set(CALLERID(num)=${CALLERID(num):2})
+exten => <EXT_NAME>,n(nonineone),Set(CALLERID(num)=${CALLERID(num):0})
+exten => <EXT_NAME>,n,Ringing()
+exten => <EXT_NAME>,n,Wait(5)
+exten => <EXT_NAME>,n,Answer
+exten => <EXT_NAME>,n,Goto(callback,<CALLBACK_EXT_NAME>,1)
+exten => h,1,system(touch /var/spool/asterisk/pending/${CALLERID(num)})

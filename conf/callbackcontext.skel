@@ -1,0 +1,7 @@
+exten => <CALLBACK_EXT_NAME>,1,Answer
+exten => <CALLBACK_EXT_NAME>,n,Set(TIMEOUT(absolute)=480)
+exten => <CALLBACK_EXT_NAME>,n,Wait(1)
+exten => <CALLBACK_EXT_NAME>,n,Verbose(Before AGI call)
+exten => <CALLBACK_EXT_NAME>,n,AGI(mojobol/mojobol-svr.py, <CALLFLOWFILE>)
+exten => <CALLBACK_EXT_NAME>,n,Verbose(After AGI call)
+exten => <CALLBACK_EXT_NAME>,n,Hangup

@@ -1,0 +1,12 @@
+{
+    "callflows":[
+        {
+            "name":"mojobolsamplecallflow1",
+            "configfile":"/opt/mojobol/samplecallflows/mojobolsamplecallflow1/mojobolsamplecallflow1.conf",
+            "ext_name":"mojobol",
+            "callback_ext_name":"mojobolcall"
+           
+        }
+    ]
+
+}

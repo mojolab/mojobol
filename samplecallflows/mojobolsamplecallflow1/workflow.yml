@@ -1,0 +1,29 @@
+---
+- id: 1487766199555
+  name: Play
+  type: play
+  root: true
+  next: 1487766339758
+  resource:
+    guid: ee2538ba-9291-29a3-40c8-924ce96a5d86
+
+- id: 1487766339758
+  name: Play
+  type: play
+  root: false
+  next: 1487767026437
+  resource:
+    guid: 35948996-7295-b5f6-adde-45961e8bcd58
+
+- id: 1487767026437
+  name: External Action
+  type: playloop
+  loop_dir: '/opt/voiceofhimalaya/playloop'
+  root: false
+  next: 1487766322300
+  bindings: []
+- id: 1487766322300
+  name: Hang Up
+  type: hang_up
+  root: false
+  next: a

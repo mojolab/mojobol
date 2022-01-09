@@ -1,0 +1,12 @@
+---
+language: en
+text: Playing latest messages
+recorded_audio: /opt/voh/vohprompts/playingoldmessages
+url: 
+type: ExternalAudio
+created_at: 2017-02-22 12:25:51.000000000 Z
+updated_at: 2017-02-22 12:25:51.000000000 Z
+extras: {}
+uploaded_audio: 
+guid: 151de41a-f0ff-4fac-7d9b-ff59f5b2d0a7
+resource_guid: 35948996-7295-b5f6-adde-45961e8bcd58

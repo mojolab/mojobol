@@ -1,0 +1,12 @@
+---
+language: en
+text: Explanation
+recorded_audio: /opt/voh/vohprompts/explanation
+url: 
+type: ExternalAudio
+created_at: 2017-02-22 12:23:37.000000000 Z
+updated_at: 2017-02-22 12:23:37.000000000 Z
+extras: {}
+uploaded_audio: 
+guid: e3a9cdfc-16eb-5647-8b15-31d000138e2d
+resource_guid: 397b08e6-45a2-1fb5-967e-0d3ce1b4c777
