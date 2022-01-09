@@ -22,10 +22,11 @@ fi
 if [ ! -d /opt/mojobol/conf/local ]; then
     echo "Creating local config directory..."
     mkdir /opt/mojobol/conf/local
+    cp /opt/mojobol/conf/callflows.json /opt/mojobol/conf/local/callflows.json
 fi
 
 # Run /opt/mojobol/setupasterisk.sh
-cd /opt/mojobol
+cd /opt/mojobol/tools
 ./setupasterisk.sh
 python3 sanity-check-mojobol.py
 
