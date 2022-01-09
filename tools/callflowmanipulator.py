@@ -1,4 +1,5 @@
 import json
+from configparser import ConfigParser
 
 with open("../conf/callbackcontext.skel", "r") as f:
     callbackcontextsection=f.read()
@@ -53,3 +54,5 @@ def generate_extensions_conf():
     return from_sip_section+"\n"+callback_section
 
     
+# Generate config file for callflow from ../conf/callflowconfigbase.conf with user input, leave existing entries as default, ask for user confirmation
+def generate_config_file():
