@@ -18,7 +18,7 @@
 - id: 1487767026437
   name: External Action
   type: playloop
-  loop_dir: '/opt/voiceofhimalaya/playloop'
+  loop_dir: '/opt/mojobol/samplecallflows/mojobolsamplecallflow1/playloop'
   root: false
   next: 1487766322300
   bindings: []
