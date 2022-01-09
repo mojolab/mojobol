@@ -10,17 +10,17 @@ with open("../conf/fromsipcontext.skel", "r") as f:
 
 def generate_fromsip_section(ext_name, callback_ext_name):
     commentline=";ext_name={},callback_ext_name={}".format(ext_name,callback_ext_name)
-    return commentline+"\n"+fromsipcontextsection.replace("<EXT_NAME>", ext_name).replace("<CALLBACK_EXT_NAME>", callback_ext_name)
+    return commentline+"\n"+fromsipcontextsection.replace("<EXT_NAME>", ext_name).replace("<CALLBACK_EXT_NAME>", callback_ext_name)+"\n"
 
 # Generate a callback section by replacing <CALLBACK_EXT_NAME> with the callback extension name in callbackcontextsection and <CALLFLOWFILE> with the path to callflow config file
 def generate_callback_section(callback_ext_name, callflowfile):
     commentline=";callback_ext_name={},callflowfile={}".format(callback_ext_name,callflowfile)
-    return commentline+"\n"+callbackcontextsection.replace("<CALLBACK_EXT_NAME>", callback_ext_name).replace("<CALLFLOWFILE>", callflowfile)
+    return commentline+"\n"+callbackcontextsection.replace("<CALLBACK_EXT_NAME>", callback_ext_name).replace("<CALLFLOWFILE>", callflowfile)+"\n"
 
 
 # Get callflows from ../conf/callflows.json
 def get_callflows():
-    with open("../conf/callflows.json", "r") as f:
+    with open("../conf/local/callflows.json", "r") as f:
         callflows = json.load(f)
     return callflows['callflows']
 
@@ -32,7 +32,7 @@ def generate_fromsip_sections(callflows):
         fromsip_sections.append(generate_fromsip_section(callflow['ext_name'], callflow['callback_ext_name']))
     from_sip_section="[from-sip]\n"
     for section in fromsip_sections:
-        from_sip_section+=section
+        from_sip_section+=section+"\n"
     return from_sip_section
 
 # Generate a [callback] section for each extension in callflows
@@ -42,7 +42,7 @@ def generate_callback_sections(callflows):
         callback_sections.append(generate_callback_section(callflow['callback_ext_name'], callflow['configfile']))
     callback_section="[callback]\n"
     for section in callback_sections:
-        callback_section+=section
+        callback_section+=section+"\n"
     return callback_section
 
 # Generate extensions.conf

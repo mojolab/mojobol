@@ -249,6 +249,7 @@ class MojoBolCall:
 			self.logger.error("Could not compress call file")
 
 	def updatedf(self):
+		return 0
 		if "mojobol_data.csv" in os.listdir("/opt"):
 			df=pandas.read_csv("/opt/mojobol_data.csv")
 			self.logger.info(self.calldata)	
