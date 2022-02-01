@@ -55,4 +55,18 @@ def generate_extensions_conf():
 
     
 # Generate config file for callflow from ../conf/callflowconfigbase.conf with user input, leave existing entries as default, ask for user confirmation
-def generate_config_file():
+def generate_config_file(workflowpath):
+    config = ConfigParser()
+    config.read("../conf/callflowconfigbase.conf")
+    keylist=['servername','serverdir','workflowpath']
+    confdict={}
+    for key in keylist:
+        if key=="servername":
+            defaultval=config.get('Server',key)
+        else:
+            defaultval=workflowpath
+        confdict[key]=input("enter value for {}[default={}]: ".format(key, defaultval))
+    for key in keylist:
+        config.set("Server",key,confdict[key])
+    
+    return config
