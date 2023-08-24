@@ -7,6 +7,8 @@ import pprint
 import uuid
 import logging
 import yaml
+from text_speech_utils import *
+import asyncio
 
 def read_agi_environment():
     env = {}
@@ -371,4 +373,23 @@ class MojoAsteriskPlayer:
             else:
                 self.calllogger.info('Loop directory does not exist')
             return None
+        #add a step type askgpt which will ask a question and get a response from chatgpt api
+        #while waiting for response, play a file
+        if step['type']=='askgpt':
+            #run the tasks below asynchronously play a file while the async tasks complete in the background
+            #play a audio file while the async tasks complete in the background
+            asyncio.run(workflow(os.path.join(playloopdir,filename.split(".")[0]),keydict))
+
+                
+
+                
+                
+
+
         
+
+            
+            #get response from chatgpt api
+            #play response
+            return None
+
