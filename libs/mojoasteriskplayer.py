@@ -378,16 +378,9 @@ class MojoAsteriskPlayer:
         if step['type']=='askgpt':
             #run the tasks below asynchronously play a file while the async tasks complete in the background
             #play a audio file while the async tasks complete in the background
-            asyncio.run(workflow(os.path.join(playloopdir,filename.split(".")[0]),keydict))
+            for filename in files:
 
-                
-
-                
-                
-
-
-        
-
+                asyncio.run(workflow(os.path.join(playloopdir,filename.split(".")[0]),keydict))
             
             #get response from chatgpt api
             #play response

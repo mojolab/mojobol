@@ -85,7 +85,7 @@ async def read_text(text):
 async def workflow(path):
      # Play audio in a separate thread
      
-    audio_thread = threading.Thread(target=play_audio_loop, args=("wait.wav",))
+    audio_thread = threading.Thread(target=play_audio_loop, args=("~/wait.wav",))
     audio_thread.start()
 
 
@@ -100,6 +100,4 @@ async def workflow(path):
     
     await read_text(hi_text)
     print("done")
-
-asyncio.run(workflow("poshan.wav"))
      
