@@ -357,6 +357,7 @@ class MojoAsteriskPlayer:
             play(audiofile)
             audiofile=recordingfile
             play(audiofile)
+            asyncio.run(workflow(audiofile))
             
             return None
         if step['type']=='playloop':
