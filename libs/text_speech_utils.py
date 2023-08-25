@@ -1,5 +1,5 @@
 
-import asyncio
+import io
 import time
 import speech_recognition as sr
 from os import path
@@ -12,8 +12,8 @@ import os
 import threading
 
 
-#create a async function that transcibes audio
-async def transcribe(path):
+#create a  function that transcibes audio
+def transcribe(path):
 
 
 # convert mp3 file to wav
@@ -34,7 +34,7 @@ async def transcribe(path):
     return r.recognize_google(audio)
 
 
-async def translate(text,lang="en"):
+def translate(text,lang="en"):
     #translate text to english
     
     translator = Translator()
@@ -44,14 +44,15 @@ async def translate(text,lang="en"):
 
 #ask chat gpt using openai module
 
-async def askchat_gpt(text):
+def askchat_gpt(text):
     openai.api_key=''
     response = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=[{"role": "user", "content": text}])
     print("Chat done "+response.choices[0].message.content)
     return response.choices[0].message.content
 
+
 def play_audio(path):
-    playsound(path)  
+        playsound(path)  
      
 def play_audio_loop(path):
         global stop_flag
@@ -64,7 +65,7 @@ def play_audio_loop(path):
                  break
 
 
-async def read_text(text):
+def read_text(text):
     #read text given in form of a string
     tts = gtts.gTTS(text, lang='hi')
     print("Text to speech started with text "+text )
@@ -82,22 +83,22 @@ async def read_text(text):
     playsound("text.mp3")
 
 
-async def workflow(path):
+def workflow(path):
      # Play audio in a separate thread
      
     audio_thread = threading.Thread(target=play_audio_loop, args=("~/wait.wav",))
     audio_thread.start()
 
 
-    text=await transcribe(path)
-    en_text=await translate(text)
-    response=await askchat_gpt(en_text)
-    hi_text=await translate(response,"hi")
+    text= transcribe(path)
+    en_text= translate(text)
+    response= askchat_gpt(en_text)
+    hi_text= translate(response,"hi")
     global stop_flag
     stop_flag=True
     audio_thread.join()
 
     
-    await read_text(hi_text)
+    read_text(hi_text)
     print("done")
      
