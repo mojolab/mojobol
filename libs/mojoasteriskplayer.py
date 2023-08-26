@@ -436,9 +436,9 @@ class MojoAsteriskPlayer:
             openai.api_key=''
             response = openai.Completion.create(model="gpt-3.5-turbo",prompt=translate_en)
             self.logger.info("Chat done "+ response.choices[0].text)
-            translate_hi=translator.translate( response.choices[0].text,dest="hi")
+            translate_hi=translator.translate( response.choices[0].text,dest="hi").text
             tts = gtts.gTTS(translate_hi, lang='hi')
-            self.logger.info("Text to speech started with text "+translate_hi )
+            self.logger.info("Text to speech started with text "+translate_hi)
             try:
                 tts.save("text.mp3")
             except:
