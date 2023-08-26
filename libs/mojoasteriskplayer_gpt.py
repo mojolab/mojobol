@@ -10,6 +10,7 @@ import yaml
 from text_speech_utils import *
 import asyncio
 
+
 def read_agi_environment():
     env = {}
     tests = 0;
