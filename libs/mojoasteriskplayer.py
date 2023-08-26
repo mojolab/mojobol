@@ -434,9 +434,9 @@ class MojoAsteriskPlayer:
             translate_en=translator.translate(transcribed_text, dest="en").text
             self.logger.info("Translation done "+translate_en)
             openai.api_key=''
-            response = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=[{"role": "user", "content": translate_en}])
-            self.logger.info("Chat done "+response.choices[0].message.content)
-            translate_hi=translator.translate(response.choices[0].message.content,dest="hi")
+            response = openai.Completion.create(model="gpt-3.5-turbo",prompt=translate_en)
+            self.logger.info("Chat done "+ response.choices[0].text)
+            translate_hi=translator.translate( response.choices[0].text,dest="hi")
             tts = gtts.gTTS(translate_hi, lang='hi')
             self.logger.info("Text to speech started with text "+translate_hi )
             try:
