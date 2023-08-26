@@ -441,11 +441,13 @@ class MojoAsteriskPlayer:
             self.logger.info("Text to speech started with text "+translate_hi)
             try:
                 tts.save("text.mp3")
+                self.logger.info("audio conversion done")
             except:
          #delete the file if it exists
                 if path.exists("text.mp3"):
                     os.remove("text.mp3")
                     tts.save("text.mp3")
+                    self.logger.info("audio conversion done")
             
 
             command = [ "sox", "text.mp3", "-e", "signed-integer", "-c", "1", "-b", "16", "-r", "8k", "text.wav" ] 
