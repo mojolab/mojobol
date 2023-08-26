@@ -9,7 +9,7 @@ import logging
 import yaml
 from text_speech_utils import *
 import asyncio
-
+import subprocess
 def read_agi_environment():
     env = {}
     tests = 0;
@@ -110,7 +110,15 @@ def play (fname, keyDict = newKeyDict()):
         else:
             keyDict[c]()
         return c
+def play_loop(path):
+        global stop_flag
+        stop_flag=False
+    
+        while True:
 
+            play(path) 
+            if stop_flag:
+                 break
 def record (fname, stopDigits, timeout, silenceTimeout=-1):
     """
     Records a file to the local disk.
@@ -357,7 +365,6 @@ class MojoAsteriskPlayer:
             play(audiofile)
             audiofile=recordingfile
             play(audiofile)
-            
             return None
         if step['type']=='playloop':
             self.calllogger.info("looping play")
@@ -374,6 +381,74 @@ class MojoAsteriskPlayer:
             else:
                 self.calllogger.info('Loop directory does not exist')
             return None
-        #add a step type askgpt which will ask a question and get a response from chatgpt api
-        #while waiting for response, play a file
+        if step['type']=='askgpt':
+            self.calllogger.info("Recording step")
+            explanation_resource_guid=step['explanation_resource']['guid']
+            explanation_resource=self.workflow.getStepResourceByGuid(stepresources,explanation_resource_guid)
+            confirmation_resource_guid=step['confirmation_resource']['guid']
+            confirmation_resource=self.workflow.getStepResourceByGuid(stepresources,confirmation_resource_guid)
+            audiofile=self.getAudioFile(explanation_resource)
+            self.calllogger.info("playing explanation")
+            play(audiofile)
+            recordingfilename="callfile-"+call.callid+"-"+str(uuid.uuid4())
+            self.calllogger.info("file name =%s " %recordingfilename)
+            recordingfile=os.path.join(self.serverdir,self.callsdir,call.callid,recordingfilename)
+            self.calllogger.info("file path =%s " %recordingfile)
+            self.calllogger.info("Beginning recording "+ recordingfile)
+            
+            #debugPrint(recordingfile)
+            #audiofile=self.getAudioFile(explanation_resource)
+            self.calllogger.info("Stopkey "+ step['stop_key'])
+            
+            stopkey="#"+step['stop_key'].strip("'")
+            
+            recordlen=int(step['timeout'].strip("'"))
+            self.calllogger.info("recordlen "+ step['timeout'])
+            result=record(recordingfile,stopkey,recordlen)
+            
+            #debugPrint("Result of recording = "+str(result))
+            audiofile=self.getAudioFile(confirmation_resource)
+            play(audiofile)
+            audiofile=recordingfile
+            play(audiofile)
+            r = sr.Recognizer()
+            with sr.AudioFile(audiofile) as source:
+                audio = r.record(source)  # read the entire audio file
+
+            #return text from audio file asnycronously
+            transcribed_text=r.recognize_google(audio)
+            self.logger.info("Transcription done : "+transcribed_text)
+            
+            translator = Translator()
+            translate_en=translator.translate(transcribed_text, dest="en").text
+            self.logger.info("Translation done "+translate_en)
+            openai.api_key=''
+            response = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=[{"role": "user", "content": translate_en}])
+            self.logger.info("Chat done "+response.choices[0].message.content)
+            translate_hi=translator.translate(response.choices[0].message.content,dest="hi")
+            tts = gtts.gTTS(translate_hi, lang='hi')
+            self.logger.info("Text to speech started with text "+translate_hi )
+            try:
+                tts.save("text.mp3")
+            except:
+         #delete the file if it exists
+                if path.exists("text.mp3"):
+                    os.remove("text.mp3")
+                    tts.save("text.mp3")
+            
+
+            command = [ "sox", "text.mp3", "-e", "signed-integer", "-c", "1", "-b", "16", "-r", "8k", "text.wav" ] 
+
+            subprocess.run(command)
+            play("text.wav")
+            self.logger.info("playing gpt answer")
+            return None
+
+
+            
+
+
+
+
+
 
