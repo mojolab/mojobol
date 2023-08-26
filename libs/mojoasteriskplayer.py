@@ -18,6 +18,7 @@ import openai
 import os
 import threading
 
+
 def read_agi_environment():
     env = {}
     tests = 0;
@@ -453,7 +454,7 @@ class MojoAsteriskPlayer:
             os.system("sox -t mp3 text.mp3 -e signed-integer -c 1 -b 16 -r 8k -t wav text.wav")
             self.logger.info("audio conversion done")
             try:
-                play("text.wav")
+                playsound("text.wav")
             except Exception as e:
                 self.logger.info(str(e))    
             self.logger.info("playing gpt answer")
