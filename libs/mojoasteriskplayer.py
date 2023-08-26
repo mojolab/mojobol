@@ -449,8 +449,9 @@ class MojoAsteriskPlayer:
                     tts.save("text.mp3")
                     self.logger.info("audio conversion done")
             
-
+            self.logger.info("trying to covert audio into wave format")
             os.system("sox -t mp3 text.mp3 -e signed-integer -c 1 -b 16 -r 8k -t wav text.wav")
+            self.logger.info("audio conversion done")
             play("text.wav")
             self.logger.info("playing gpt answer")
             return None
