@@ -450,9 +450,7 @@ class MojoAsteriskPlayer:
                     self.logger.info("audio conversion done")
             
 
-            command = [ "sox", "text.mp3", "-e", "signed-integer", "-c", "1", "-b", "16", "-r", "8k", "text.wav" ] 
-
-            subprocess.run(command)
+            os.system("sox -t mp3 text.mp3 -e signed-integer -c 1 -b 16 -r 8k -t wav text.wav")
             play("text.wav")
             self.logger.info("playing gpt answer")
             return None
