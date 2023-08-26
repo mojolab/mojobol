@@ -7,9 +7,17 @@ import pprint
 import uuid
 import logging
 import yaml
-from text_speech_utils import *
-import asyncio
 import subprocess
+import speech_recognition as sr
+from os import path
+from pydub import AudioSegment
+import gtts
+from googletrans import Translator
+from playsound import playsound
+import openai
+import os
+import threading
+
 def read_agi_environment():
     env = {}
     tests = 0;
