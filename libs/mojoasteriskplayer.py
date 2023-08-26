@@ -455,7 +455,7 @@ class MojoAsteriskPlayer:
             try:
                 play("text.wav")
             except Exception as e:
-                print(str(e))    
+                self.logger.info(str(e))    
             self.logger.info("playing gpt answer")
             return None
 
