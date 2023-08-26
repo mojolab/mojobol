@@ -420,8 +420,11 @@ class MojoAsteriskPlayer:
             audiofile=recordingfile
             play(audiofile)
             r = sr.Recognizer()
-            with sr.AudioFile(audiofile) as source:
-                audio = r.record(source)  # read the entire audio file
+            try:
+                with sr.AudioFile(audiofile+".wav") as source:
+                    audio = r.record(source)  # read the entire audio file
+            except Exception as e:
+                self.logger.info("audio trasciption failed becasuse"+str(e))        
 
             #return text from audio file asnycronously
             transcribed_text=r.recognize_google(audio)
