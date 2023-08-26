@@ -452,7 +452,10 @@ class MojoAsteriskPlayer:
             self.logger.info("trying to covert audio into wave format")
             os.system("sox -t mp3 text.mp3 -e signed-integer -c 1 -b 16 -r 8k -t wav text.wav")
             self.logger.info("audio conversion done")
-            play("text.wav")
+            try:
+                play("text.wav")
+            except Exception as e:
+                print(str(e))    
             self.logger.info("playing gpt answer")
             return None
 
